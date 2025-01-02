@@ -137,7 +137,7 @@
         <h2 class="text-2xl font-semibold mb-4">Winning the Game</h2>
         <p>
           The game continues until all pieces have battled. The player with the
-          highest total score at the end wins!
+          highest total score at the end wins and earns the King from their opponent!
         </p>
       </div>
     </div>
