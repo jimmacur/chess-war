@@ -119,8 +119,7 @@
           <li class="mb-2">
             Each piece is assigned a random value ranging from <strong>0</strong> to its normal value. 
             The piece with the higher random value wins. 
-            <br />
-            <div class="text-m bg-gray-700 p-2 rounded-lg">
+            <div class="text-m bg-gray-600 p-2 rounded-lg mt-2">
             For example, a rook with a random value between <strong>0</strong> and <strong>5</strong> could potentially beat a queen with a random value between <strong>0</strong> and <strong>9</strong> if the rook's random value is higher. 
             </div>
           </li>

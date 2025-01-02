@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex flex-col items-center justify-center"
-  >
+  <div class="flex flex-col items-center justify-center">
     <!-- Title -->
     <h1 class="text-8xl font-bold mb-8">Chess War</h1>
 
@@ -16,35 +14,44 @@
 
     <!-- Buttons -->
     <div>
-      <router-link to="/game/computer" class="btn">Play vs. Computer</router-link>
+      <button @click="openModal('playVsComputer')" class="btn">Play vs. Computer</button>
       <router-link to="/game/friend" class="btn">Play vs. Friend</router-link>
-      <button @click="showModal = true" class="btn">About</button>
+      <button @click="openModal('about')" class="btn">About</button>
     </div>
-    
-    <!-- Modal -->
+
+    <!-- Modals -->
     <AboutModal
-      v-if="showModal"
+      v-if="currentModal === 'about'"
       @close="closeModal"
     ></AboutModal>
+    <PlayVsComputerModal
+      v-if="currentModal === 'playVsComputer'"
+      @close="closeModal"
+    ></PlayVsComputerModal>
   </div>
 </template>
 
 <script lang="ts">
 import AboutModal from "../components/AboutChessWar.vue";
+import PlayVsComputerModal from "../components/PlayVsComputerModal.vue";
 
 export default {
   name: "HomeScreen",
   components: {
     AboutModal,
+    PlayVsComputerModal,
   },
   data() {
     return {
-      showModal: false,
+      currentModal: null as string | null,
     };
   },
   methods: {
+    openModal(modalName: string) {
+      this.currentModal = modalName;
+    },
     closeModal() {
-      this.showModal = false;
+      this.currentModal = null;
     },
   },
 };
