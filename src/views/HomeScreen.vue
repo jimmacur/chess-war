@@ -22,7 +22,10 @@
     </div>
     
     <!-- Modal -->
-    <about-modal></about-modal>
+    <AboutModal
+      v-if="showModal"
+      @close="closeModal"
+    ></AboutModal>
   </div>
 </template>
 
@@ -38,6 +41,11 @@ export default {
     return {
       showModal: false,
     };
+  },
+  methods: {
+    closeModal() {
+      this.showModal = false;
+    },
   },
 };
 </script>

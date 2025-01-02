@@ -1,6 +1,7 @@
 <template>
   <div
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    @mousedown.self="$emit('close')"
   >
     <div
       class="bg-gray-500 text-white p-8 rounded-lg shadow-lg max-w-3xl w-full h-4/5 overflow-y-auto relative"
@@ -138,12 +139,12 @@
 
 <script lang="ts">
 export default {
-  name: "AboutModal",
+  name: "AboutModal"
 };
 </script>
 
 <style scoped>
-/* Ensure scrollbars are styled nicely */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -156,4 +157,5 @@ export default {
 ::-webkit-scrollbar-thumb:hover {
   background: #2d3748;
 }
+
 </style>
