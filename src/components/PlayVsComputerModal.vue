@@ -9,7 +9,7 @@
         @click="$emit('close')"
         class="absolute top-4 right-4 text-gray-400 hover:text-white"
       >
-        ✖
+      ⚔️
       </button>
 
       <!-- Title -->
@@ -78,13 +78,18 @@
 </template>
 
 <script lang="ts">
+interface Avatar {
+  src: string;
+  name: string;
+}
+
 export default {
   name: "PlayVsComputerModal",
   data() {
     return {
       playerName: "",
-      side: "white", // Default side
-      selectedAvatar: null,
+      side: "black",
+      selectedAvatar: null as Avatar | null,
       avatars: [
         { src: "/src/assets/avatars/bishopofbling.png", name: "Bishop of Bling" },
         { src: "/src/assets/avatars/pawnderer.png", name: "Pawnderer" },
@@ -95,10 +100,6 @@ export default {
         { src: "/src/assets/avatars/steampunkbishop.png", name: "Steampunk Bishop" },
         { src: "/src/assets/avatars/checkmatey.png", name: "Check Matey" },
         { src: "/src/assets/avatars/rookzilla.png", name: "Rookzilla" },
-        // { src: "/src/assets/avatars/kingofthegrill.png", name: "King of the Grill" },
-        // { src: "/src/assets/avatars/queenofheartbreak.png", name: "Queen of Heartbreak" },
-        // { src: "/src/assets/avatars/rookandroll.png", name: "Rook and Roll" },
-        // { src: "/src/assets/avatars/rookie.png", name: "Rookie of the Year" },
       ],  
     };
   },
