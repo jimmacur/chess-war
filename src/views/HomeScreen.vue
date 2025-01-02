@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white"
+    class="flex flex-col items-center justify-center"
   >
     <!-- Title -->
     <h1 class="text-8xl font-bold mb-8">Chess War</h1>
@@ -18,13 +18,26 @@
     <div>
       <router-link to="/game/computer" class="btn">Play vs. Computer</router-link>
       <router-link to="/game/friend" class="btn">Play vs. Friend</router-link>
-      <router-link to="/about" class="btn">About</router-link>
+      <button @click="showModal = true" class="btn">About</button>
     </div>
+    
+    <!-- Modal -->
+    <about-modal></about-modal>
   </div>
 </template>
 
 <script lang="ts">
+import AboutModal from "../components/AboutChessWar.vue";
+
 export default {
   name: "HomeScreen",
+  components: {
+    AboutModal,
+  },
+  data() {
+    return {
+      showModal: false,
+    };
+  },
 };
 </script>
