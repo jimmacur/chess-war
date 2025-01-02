@@ -11,7 +11,7 @@
         @click="$emit('close')"
         class="absolute top-4 right-4 text-gray-400 hover:text-white"
       >
-        ✖
+      ⚔️
       </button>
 
       <!-- Title -->
@@ -114,10 +114,17 @@
         <h2 class="text-2xl font-semibold mb-4">Gameplay</h2>
         <ul class="list-disc list-inside">
           <li class="mb-2">
-            On each turn, one piece from each side battles the other.
+            On each turn, one random piece from each side battles the other.
           </li>
           <li class="mb-2">
-            Each piece is assigned a random value ranging from <strong>0</strong> to its normal maximum value. For example, a rook with a value between <strong>0</strong> and <strong>5</strong> could potentially beat a queen with a value between <strong>0</strong> and <strong>9</strong> if the rook's random value is higher. The piece with the higher random value wins, and the winner adds the <strong>maximum values</strong> of both pieces to their score.
+            Each piece is assigned a random value ranging from <strong>0</strong> to its normal maximum value. 
+            <br />
+            <br />
+            <div class="text-m bg-gray-700 p-2 rounded-lg">
+            For example, a rook with a value between <strong>0</strong> and <strong>5</strong> could potentially beat a queen with a value between <strong>0</strong> and <strong>9</strong> if the rook's random value is higher. 
+            </div>
+            <br />
+            The piece with the higher random value wins, and the winner adds the <strong>maximum values</strong> of both pieces to their score.
           </li>
           <li>
             In case of a tie, the pieces go to the <em>“War Zone”</em>. The winner of the next round collects all the points.
