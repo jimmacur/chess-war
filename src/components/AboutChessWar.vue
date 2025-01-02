@@ -41,67 +41,67 @@
           <tbody>
             <tr class="border-b border-gray-800">
               <td class="px-4 py-2 flex items-center">
+                Pawn
                 <img
                   src="/src/assets/pieces/black-pawn.svg"
                   alt="Black Pawn"
                   class="inline-block h-8 w-6 mr-2"
                 />
-                Pawn
               </td>
               <td class="px-4 py-2">1</td>
             </tr>
             <tr class="border-b border-gray-800">
               <td class="px-4 py-2 flex items-center">
+                Bishop
                 <img
                   src="/src/assets/pieces/black-bishop.svg"
                   alt="Black Bishop"
                   class="inline-block h-8 w-6 mr-2"
                 />
-                Bishop
               </td>
               <td class="px-4 py-2">3</td>
             </tr>
             <tr class="border-b border-gray-800">
               <td class="px-4 py-2 flex items-center">
+                Knight
                 <img
                   src="/src/assets/pieces/black-knight.svg"
                   alt="Black Knight"
                   class="inline-block h-8 w-6 mr-2"
                 />
-                Knight
               </td>
               <td class="px-4 py-2">3</td>
             </tr>
             <tr class="border-b border-gray-800">
               <td class="px-4 py-2 flex items-center">
+                Rook
                 <img
                   src="/src/assets/pieces/black-rook.svg"
                   alt="Black Rook"
                   class="inline-block h-8 w-6 mr-2"
                 />
-                Rook
               </td>
               <td class="px-4 py-2">5</td>
             </tr>
             <tr class="border-b border-gray-800">
               <td class="px-4 py-2 flex items-center">
+                Queen
                 <img
                   src="/src/assets/pieces/black-queen.svg"
                   alt="Black Queen"
                   class="inline-block h-8 w-6 mr-2"
                 />
-                Queen
               </td>
               <td class="px-4 py-2">9</td>
             </tr>
             <tr class="border-b border-gray-800">
               <td class="px-4 py-2 flex items-center">
+                King
                 <img
                   src="/src/assets/pieces/black-king.svg"
                   alt="Black King"
                   class="inline-block h-8 w-6 mr-2"
                 />
-                King
               </td>
               <td class="px-4 py-2">Priceless</td>
             </tr>
@@ -117,14 +117,15 @@
             On each turn, one random piece from each side battles the other.
           </li>
           <li class="mb-2">
-            Each piece is assigned a random value ranging from <strong>0</strong> to its normal maximum value. 
-            <br />
+            Each piece is assigned a random value ranging from <strong>0</strong> to its normal value. 
+            The piece with the higher random value wins. 
             <br />
             <div class="text-m bg-gray-700 p-2 rounded-lg">
-            For example, a rook with a value between <strong>0</strong> and <strong>5</strong> could potentially beat a queen with a value between <strong>0</strong> and <strong>9</strong> if the rook's random value is higher. 
+            For example, a rook with a random value between <strong>0</strong> and <strong>5</strong> could potentially beat a queen with a random value between <strong>0</strong> and <strong>9</strong> if the rook's random value is higher. 
             </div>
-            <br />
-            The piece with the higher random value wins, and the winner adds the <strong>maximum values</strong> of both pieces to their score.
+          </li>
+          <li class="mb-2">
+            The winner adds the <strong>classical values</strong> of both pieces to their score.
           </li>
           <li>
             In case of a tie, the pieces go to the <em>“War Zone”</em>. The winner of the next round collects all the points.
