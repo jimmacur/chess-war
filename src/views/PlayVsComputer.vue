@@ -16,8 +16,14 @@
     </div>
 
     <!-- Player Pieces -->
-    <div class="absolute top-40 left-8 flex flex-col space-y-2 items-center">
-      <img v-for="(piece, index) in playerPieces" :key="index" :src="piece" alt="Piece" class="w-8 h-8" />
+    <div class="absolute top-40 left-8 grid grid-cols-3 gap-2">
+      <img
+        v-for="(piece, index) in playerPieces"
+        :key="index"
+        :src="piece"
+        alt="Piece"
+        class="w-20 h-20"
+      />
     </div>
 
     <!-- Title -->
@@ -39,8 +45,14 @@
     </div>
 
     <!-- Computer Pieces -->
-    <div class="absolute top-40 right-8 flex flex-col space-y-2 items-center">
-      <img v-for="(piece, index) in computerPieces" :key="index" :src="piece" alt="Piece" class="w-8 h-8" />
+    <div class="absolute top-40 right-8 grid grid-cols-3 gap-2">
+      <img
+        v-for="(piece, index) in computerPieces"
+        :key="index"
+        :src="piece"
+        alt="Piece"
+        class="w-20 h-20"
+      />
     </div>
 
     <!-- Chess Board Placeholder -->
@@ -63,9 +75,9 @@ export default {
   data() {
     return {
       playerData: {
-        name: "Player", // Default name
-        side: "white",  // Default side
-        avatar: { src: "/src/assets/default-avatar.png", name: "Default Avatar" }, // Default avatar
+        name: "Player", 
+        side: "white",
+        avatar: { src: "/src/assets/default-avatar.png", name: "Default Avatar" }, // 
       },
       computerData: {
         name: "Computer",
@@ -74,8 +86,8 @@ export default {
       },
       playerScore: 0,
       computerScore: 0,
-      playerPieces: [],
-      computerPieces: [],
+      playerPieces: [] as string[],
+      computerPieces: [] as string[],
     };
   },
   mounted() {
