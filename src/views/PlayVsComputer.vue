@@ -58,13 +58,16 @@
 
       <!-- Active Pieces -->
       <div v-if="activePieces.length === 2" class="mt-20 flex justify-center items-center space-x-10">
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center space-y-2">
           <img :src="activePieces[0].src" :alt="activePieces[0].name" class="w-12 h-12" />
-          <p>Value: {{ playerPieceValue }}</p>
+          <p class="text-sm">Base Value: {{ activePieces[0].classicalValue }}</p>
+          <p class="text-lg font-bold">Battle Value: {{ playerPieceValue }}</p>
         </div>
-        <div class="flex flex-col items-center">
+        <div class="text-2xl font-bold mx-4">VS</div>
+        <div class="flex flex-col items-center space-y-2">
           <img :src="activePieces[1].src" :alt="activePieces[1].name" class="w-12 h-12" />
-          <p>Value: {{ computerPieceValue }}</p>
+          <p class="text-sm">Base Value: {{ activePieces[1].classicalValue }}</p>
+          <p class="text-lg font-bold">Battle Value: {{ computerPieceValue }}</p>
         </div>
       </div>
     </div>
@@ -211,6 +214,9 @@ export default {
 
       if (playerPiece && computerPiece) {
         this.activePieces = [playerPiece, computerPiece];
+        // Initialize piece values when pieces are selected
+        this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
+        this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
         this.isBattleMode = true;
       }
     },
@@ -219,9 +225,7 @@ export default {
 
       const [playerPiece, computerPiece] = this.activePieces;
       
-      this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
-      this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
-
+      // Show the result of the battle
       if (this.playerPieceValue > this.computerPieceValue) {
         this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
       } else if (this.computerPieceValue > this.playerPieceValue) {
