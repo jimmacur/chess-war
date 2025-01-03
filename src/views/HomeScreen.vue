@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center">
+  <div>
     <!-- Title -->
     <h1 class="text-8xl font-bold mb-8">Chess War</h1>
 
