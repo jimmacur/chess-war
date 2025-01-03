@@ -1,14 +1,13 @@
+// PlayVsComputer.vue
 <template>
   <div class="min-h-screen bg-gray-900 text-white">
     <!-- Player Score and Avatar -->
     <div class="absolute top-8 left-8 flex items-center space-x-4">
-      <!-- Player Avatar -->
       <img
-        :src="playerData.avatar?.src"
-        :alt="playerData.avatar?.name"
+        :src="playerData.avatar.src || '/src/assets/default-avatar.png'"
+        :alt="playerData.avatar.name || 'Player Avatar'"
         class="w-16 h-16 rounded-full"
       />
-      <!-- Player Score Box -->
       <div class="w-32 h-24 bg-gray-800 text-white p-2 rounded shadow-lg flex flex-col items-center justify-center">
         <h2 class="text-sm font-semibold text-center truncate">{{ playerData.name }}</h2>
         <p class="text-2xl font-bold">{{ playerScore }}</p>
@@ -18,10 +17,10 @@
     <!-- Player Pieces -->
     <div class="absolute top-40 left-8 grid grid-cols-3 gap-2">
       <img
-        v-for="(piece, index) in playerPieces"
-        :key="index"
-        :src="piece"
-        alt="Piece"
+        v-for="piece in playerPieces"
+        :key="piece.id"
+        :src="piece.src"
+        :alt="piece.name"
         class="w-20 h-20"
       />
     </div>
@@ -31,15 +30,13 @@
 
     <!-- Computer Score and Avatar -->
     <div class="absolute top-8 right-8 flex items-center space-x-4">
-      <!-- Computer Score Box -->
       <div class="w-32 h-24 bg-gray-800 text-white p-2 rounded shadow-lg flex flex-col items-center justify-center">
         <h2 class="text-sm font-semibold text-center">Computer</h2>
         <p class="text-2xl font-bold">{{ computerScore }}</p>
       </div>
-      <!-- Computer Avatar -->
       <img
-        :src="computerData.avatar.src"
-        alt="Computer Avatar"
+        :src="computerData.avatar.src || '/src/assets/default-avatar.png'"
+        :alt="computerData.avatar.name || 'Computer Avatar'"
         class="w-16 h-16 rounded-full"
       />
     </div>
@@ -47,17 +44,40 @@
     <!-- Computer Pieces -->
     <div class="absolute top-40 right-8 grid grid-cols-3 gap-2">
       <img
-        v-for="(piece, index) in computerPieces"
-        :key="index"
-        :src="piece"
-        alt="Piece"
+        v-for="piece in computerPieces"
+        :key="piece.id"
+        :src="piece.src"
+        :alt="piece.name"
         class="w-20 h-20"
       />
     </div>
 
-    <!-- Chess Board Placeholder -->
-    <div class="flex items-center justify-center w-full max-w-2xl h-80 bg-gray-800 rounded-lg shadow-lg mx-auto">
-      <p class="text-gray-400">Chess Board Goes Here</p>
+    <!-- Chess Board -->
+    <div class="flex items-center justify-center w-full max-w-2xl h-80 bg-gray-800 rounded-lg shadow-lg mx-auto relative">
+      <p v-if="!activePieces.length" class="text-gray-400">Battle field is ready</p>
+
+      <!-- Active Pieces -->
+      <div v-if="activePieces.length === 2" class="mt-20 flex justify-center items-center space-x-10">
+        <div class="flex flex-col items-center">
+          <img :src="activePieces[0].src" :alt="activePieces[0].name" class="w-12 h-12" />
+          <p>Value: {{ playerPieceValue }}</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <img :src="activePieces[1].src" :alt="activePieces[1].name" class="w-12 h-12" />
+          <p>Value: {{ computerPieceValue }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Begin Button -->
+    <div class="mt-10 flex justify-center">
+      <button
+        class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        @click="isBattleMode ? battle() : beginBattle()"
+        :disabled="!canBattle"
+      >
+        {{ isBattleMode ? "Battle" : "Begin" }}
+      </button>
     </div>
 
     <!-- Back to Home -->
@@ -70,59 +90,149 @@
 </template>
 
 <script lang="ts">
+interface ChessPiece {
+  id: string;
+  src: string;
+  name: string;
+  classicalValue: number;
+}
+
+interface PlayerData {
+  name: string;
+  side: 'white' | 'black';
+  avatar: {
+    src: string;
+    name: string;
+  };
+}
+
 export default {
   name: "PlayVsComputer",
   data() {
     return {
       playerData: {
-        name: "Player", 
+        name: "Player",
         side: "white",
-        avatar: { src: "/src/assets/default-avatar.png", name: "Default Avatar" }, // 
-      },
+        avatar: { src: "/src/assets/default-avatar.png", name: "Player Avatar" },
+      } as PlayerData,
       computerData: {
         name: "Computer",
         side: "black",
-        avatar: { src: "/src/assets/default-avatar.png", name: "Default Avatar" }, // Default avatar
-      },
+        avatar: { src: "/src/assets/default-avatar.png", name: "Computer Avatar" },
+      } as PlayerData,
+      playerPieces: [] as ChessPiece[],
+      computerPieces: [] as ChessPiece[],
+      activePieces: [] as ChessPiece[],
       playerScore: 0,
       computerScore: 0,
-      playerPieces: [] as string[],
-      computerPieces: [] as string[],
+      playerPieceValue: 0,
+      computerPieceValue: 0,
+      isBattleMode: false,
     };
   },
+  computed: {
+    canBattle(): boolean {
+      return (
+        (!this.isBattleMode && this.playerPieces.length > 0 && this.computerPieces.length > 0) ||
+        (this.isBattleMode && this.activePieces.length === 2)
+      );
+    },
+  },
   mounted() {
-    try {
-      // Retrieve player and computer data
-      const storedPlayerData = sessionStorage.getItem("playerData");
-      if (storedPlayerData) {
-        this.playerData = JSON.parse(storedPlayerData);
-      }
-      const storedComputerData = sessionStorage.getItem("computerData");
-      if (storedComputerData) {
-        this.computerData = JSON.parse(storedComputerData);
-      }
-
-      // Set pieces based on sides
-      this.playerPieces = this.getPieces(this.playerData.side);
-      this.computerPieces = this.getPieces(this.computerData.side);
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
+    this.loadPlayerData();
+    this.initializePieces();
   },
   methods: {
-    getPieces(side: string) {
-      const basePath = `/src/assets/pieces/${side}-`;
-      return [
-        ...Array(8).fill(`${basePath}pawn.svg`),
-        `${basePath}bishop.svg`,
-        `${basePath}bishop.svg`,
-        `${basePath}knight.svg`,
-        `${basePath}knight.svg`,
-        `${basePath}rook.svg`,
-        `${basePath}rook.svg`,
-        `${basePath}queen.svg`,
-        `${basePath}king.svg`,
-      ];
+    loadPlayerData() {
+      const storedPlayerData = sessionStorage.getItem("playerData");
+      const storedComputerData = sessionStorage.getItem("computerData");
+
+      if (storedPlayerData) {
+        const parsed = JSON.parse(storedPlayerData);
+        this.playerData = {
+          name: parsed.name || "Player",
+          side: parsed.side || "white",
+          avatar: {
+            src: parsed.avatar?.src || "/src/assets/default-avatar.png",
+            name: parsed.avatar?.name || "Player Avatar",
+          },
+        };
+      }
+
+      if (storedComputerData) {
+        const parsed = JSON.parse(storedComputerData);
+        this.computerData = {
+          name: parsed.name || "Computer",
+          side: parsed.side || "black",
+          avatar: {
+            src: parsed.avatar?.src || "/src/assets/default-avatar.png",
+            name: parsed.avatar?.name || "Computer Avatar",
+          },
+        };
+      }
+    },
+    initializePieces() {
+      const generatePieces = (side: 'white' | 'black'): ChessPiece[] => {
+        const pieces: ChessPiece[] = [];
+        const piecesConfig = [
+          { name: 'pawn', value: 1, count: 8 },
+          { name: 'bishop', value: 3, count: 2 },
+          { name: 'knight', value: 3, count: 2 },
+          { name: 'rook', value: 5, count: 2 },
+          { name: 'queen', value: 9, count: 1 },
+        ];
+
+        piecesConfig.forEach(({ name, value, count }) => {
+          for (let i = 0; i < count; i++) {
+            pieces.push({
+              id: `${side}-${name}-${i}`,
+              src: `/src/assets/pieces/${side}-${name}.svg`,
+              name: `${side} ${name}`,
+              classicalValue: value,
+            });
+          }
+        });
+
+        return pieces;
+      };
+
+      this.playerPieces = generatePieces(this.playerData.side);
+      this.computerPieces = generatePieces(this.computerData.side);
+    },
+    getRandomPiece(pieces: ChessPiece[]): ChessPiece | null {
+      if (pieces.length === 0) return null;
+      
+      const randomIndex = Math.floor(Math.random() * pieces.length);
+      return pieces.splice(randomIndex, 1)[0];
+    },
+    beginBattle() {
+      const playerPiece = this.getRandomPiece(this.playerPieces);
+      const computerPiece = this.getRandomPiece(this.computerPieces);
+
+      if (playerPiece && computerPiece) {
+        this.activePieces = [playerPiece, computerPiece];
+        this.isBattleMode = true;
+      }
+    },
+    battle() {
+      if (this.activePieces.length !== 2) return;
+
+      const [playerPiece, computerPiece] = this.activePieces;
+      
+      this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
+      this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
+
+      if (this.playerPieceValue > this.computerPieceValue) {
+        this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
+      } else if (this.computerPieceValue > this.playerPieceValue) {
+        this.computerScore += playerPiece.classicalValue + computerPiece.classicalValue;
+      }
+
+      this.activePieces = [];
+      this.isBattleMode = false;
+    },
+    getRandomValue(max: number): number {
+      return Math.floor(Math.random() * (max + 1));
     },
   },
 };
