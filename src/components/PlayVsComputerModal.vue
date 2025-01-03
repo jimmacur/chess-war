@@ -104,26 +104,37 @@ export default {
     };
   },
   methods: {
-    startGame() {
-      // Save the player details
-      const playerData = {
-        name: this.playerName,
-        side: this.side,
-        avatar: this.selectedAvatar,
-      };
+  startGame() {
+    if (!this.selectedAvatar) {
+      alert("Please select an avatar before starting the game.");
+      return;
+    }
 
-      // Save data in session storage or pass it to the next screen
-      sessionStorage.setItem("playerData", JSON.stringify(playerData));
+    const computerAvatar = this.avatars[Math.floor(Math.random() * this.avatars.length)];
 
-      // Navigate to the game screen
-      this.$router.push("/game/computer");
-    },
+    const playerData = {
+      name: this.playerName || "Player",
+      side: this.side,
+      avatar: this.selectedAvatar,
+    };
+
+    const computerData = {
+      name: "Computer",
+      side: this.side === "black" ? "white" : "black",
+      avatar: computerAvatar,
+    };
+
+    sessionStorage.setItem("playerData", JSON.stringify(playerData));
+    sessionStorage.setItem("computerData", JSON.stringify(computerData));
+
+    this.$router.push("/game/computer");
   },
+},
 };
 </script>
 
 <style scoped>
-/* Custom scrollbar styling */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
