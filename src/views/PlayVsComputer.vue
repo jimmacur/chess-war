@@ -2,14 +2,14 @@
 <template>
   <div class="min-h-screen bg-gray-900 text-white">
     <!-- Player Score and Avatar -->
-    <div class="absolute top-8 left-8 flex items-center space-x-4">
+    <div class="absolute top-8 left-12 flex items-center space-x-4">
       <img
         :src="playerData.avatar.src || '/src/assets/default-avatar.png'"
         :alt="playerData.avatar.name || 'Player Avatar'"
         class="w-16 h-16 rounded-full"
       />
       <div class="w-32 h-24 bg-gray-800 text-white p-2 rounded shadow-lg flex flex-col items-center justify-center">
-        <h2 class="text-sm font-semibold text-center truncate">{{ playerData.name }}</h2>
+        <h2 class="text-sm font-semibold text-center">{{ playerData.name }}</h2>
         <p class="text-2xl font-bold">{{ playerScore }}</p>
       </div>
     </div>
@@ -29,7 +29,7 @@
     <h1 class="text-4xl font-bold text-center mt-16 mb-10">Chess War</h1>
 
     <!-- Computer Score and Avatar -->
-    <div class="absolute top-8 right-8 flex items-center space-x-4">
+    <div class="absolute top-8 right-12 flex items-center space-x-4">
       <div class="w-32 h-24 bg-gray-800 text-white p-2 rounded shadow-lg flex flex-col items-center justify-center">
         <h2 class="text-sm font-semibold text-center">Computer</h2>
         <p class="text-2xl font-bold">{{ computerScore }}</p>
@@ -57,17 +57,33 @@
       <p v-if="!activePieces.length" class="text-gray-400">Battle field is ready</p>
 
       <!-- Active Pieces -->
-      <div v-if="activePieces.length === 2" class="mt-20 flex justify-center items-center space-x-10">
+      <div v-if="activePieces.length === 2" class="flex justify-center items-center">
         <div class="flex flex-col items-center space-y-2">
           <img :src="activePieces[0].src" :alt="activePieces[0].name" class="w-12 h-12" />
-          <p class="text-sm">Base Value: {{ activePieces[0].classicalValue }}</p>
+          <p class="text-sm">Classical Value: {{ activePieces[0].classicalValue }}</p>
           <p class="text-lg font-bold">Battle Value: {{ playerPieceValue }}</p>
         </div>
         <div class="text-2xl font-bold mx-4">VS</div>
         <div class="flex flex-col items-center space-y-2">
           <img :src="activePieces[1].src" :alt="activePieces[1].name" class="w-12 h-12" />
-          <p class="text-sm">Base Value: {{ activePieces[1].classicalValue }}</p>
+          <p class="text-sm">Classical Value: {{ activePieces[1].classicalValue }}</p>
           <p class="text-lg font-bold">Battle Value: {{ computerPieceValue }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Battle Holding Zone -->
+    <div class="mt-10 flex justify-center">
+      <div v-if="holdingZone.length" class="text-center">
+        <h3 class="text-lg font-bold mb-4">War Chest</h3>
+        <div class="flex flex-wrap justify-center gap-4 max-w-lg mx-auto">
+          <img
+            v-for="(piece, index) in holdingZone"
+            :key="index"
+            :src="piece.src"
+            :alt="piece.name"
+            class="w-12 h-12"
+          />
         </div>
       </div>
     </div>
@@ -75,7 +91,7 @@
     <!-- Begin Button -->
     <div class="mt-10 flex justify-center">
       <button
-        class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        class="btn"
         @click="isBattleMode ? battle() : beginBattle()"
         :disabled="!canBattle"
       >
@@ -85,7 +101,7 @@
 
     <!-- Back to Home -->
     <div class="mt-10 flex justify-center">
-      <router-link to="/" class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      <router-link to="/" class="btn">
         Back to Home
       </router-link>
     </div>
@@ -131,6 +147,7 @@ export default {
       playerPieceValue: 0,
       computerPieceValue: 0,
       isBattleMode: false,
+      holdingZone: [] as ChessPiece[],
     };
   },
   computed: {
@@ -214,7 +231,6 @@ export default {
 
       if (playerPiece && computerPiece) {
         this.activePieces = [playerPiece, computerPiece];
-        // Initialize piece values when pieces are selected
         this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
         this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
         this.isBattleMode = true;
@@ -228,8 +244,19 @@ export default {
       // Show the result of the battle
       if (this.playerPieceValue > this.computerPieceValue) {
         this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
+        this.holdingZone.forEach(piece => {
+          this.playerScore += piece.classicalValue;
+        });
+        this.holdingZone = [];
       } else if (this.computerPieceValue > this.playerPieceValue) {
         this.computerScore += playerPiece.classicalValue + computerPiece.classicalValue;
+        this.holdingZone.forEach(piece => {
+          this.computerScore += piece.classicalValue;
+        });
+        this.holdingZone = [];
+      } else {
+        // It's a tie, move pieces to the holding zone
+        this.holdingZone.push(playerPiece, computerPiece);
       }
 
       this.activePieces = [];
