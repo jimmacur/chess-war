@@ -14,7 +14,15 @@
         <p class="text-2xl font-bold">{{ playerScore }}</p>
       </div>
     </div>
+
+    <!-- Player Pieces -->
+    <div class="absolute top-40 left-8 flex flex-col space-y-2 items-center">
+      <img v-for="(piece, index) in playerPieces" :key="index" :src="piece" alt="Piece" class="w-8 h-8" />
+    </div>
+
+    <!-- Title -->
     <h1 class="text-4xl font-bold text-center mt-16 mb-10">Chess War</h1>
+
     <!-- Computer Score and Avatar -->
     <div class="absolute top-8 right-8 flex items-center space-x-4">
       <!-- Computer Score Box -->
@@ -28,6 +36,11 @@
         alt="Computer Avatar"
         class="w-16 h-16 rounded-full"
       />
+    </div>
+
+    <!-- Computer Pieces -->
+    <div class="absolute top-40 right-8 flex flex-col space-y-2 items-center">
+      <img v-for="(piece, index) in computerPieces" :key="index" :src="piece" alt="Piece" class="w-8 h-8" />
     </div>
 
     <!-- Chess Board Placeholder -->
@@ -61,24 +74,44 @@ export default {
       },
       playerScore: 0,
       computerScore: 0,
+      playerPieces: [],
+      computerPieces: [],
     };
   },
   mounted() {
     try {
-      // Retrieve player data
+      // Retrieve player and computer data
       const storedPlayerData = sessionStorage.getItem("playerData");
       if (storedPlayerData) {
         this.playerData = JSON.parse(storedPlayerData);
       }
-
-      // Retrieve computer data
       const storedComputerData = sessionStorage.getItem("computerData");
       if (storedComputerData) {
         this.computerData = JSON.parse(storedComputerData);
       }
+
+      // Set pieces based on sides
+      this.playerPieces = this.getPieces(this.playerData.side);
+      this.computerPieces = this.getPieces(this.computerData.side);
     } catch (error) {
-      console.error("Error loading player or computer data:", error);
+      console.error("Error loading data:", error);
     }
+  },
+  methods: {
+    getPieces(side: string) {
+      const basePath = `/src/assets/pieces/${side}-`;
+      return [
+        ...Array(8).fill(`${basePath}pawn.svg`),
+        `${basePath}bishop.svg`,
+        `${basePath}bishop.svg`,
+        `${basePath}knight.svg`,
+        `${basePath}knight.svg`,
+        `${basePath}rook.svg`,
+        `${basePath}rook.svg`,
+        `${basePath}queen.svg`,
+        `${basePath}king.svg`,
+      ];
+    },
   },
 };
 </script>
