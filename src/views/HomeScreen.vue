@@ -15,7 +15,7 @@
     <!-- Buttons -->
     <div>
       <button @click="openModal('playVsComputer')" class="btn">Play vs. Computer</button>
-      <router-link to="/game/friend" class="btn">Play vs. Friend</router-link>
+      <router-link to="/game/friend" class="btn inline-block text-center">Play vs. Friend</router-link>
       <button @click="openModal('about')" class="btn">About</button>
     </div>
 

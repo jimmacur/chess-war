@@ -39,22 +39,20 @@
     />
 
     <!-- Battle Button -->
-    <div class="flex justify-center">
+    <div class="flex justify-center mt-8">
       <button
-        class="btn"
-        @click="isBattleMode ? battle() : beginBattle()"
+        class="btn w-48 text-center"
         :disabled="!canBattle"
+        @click="isBattleMode ? battle() : beginBattle()"
       >
         {{ isBattleMode ? "Battle" : "Prepare for battle" }}
       </button>
     </div>
 
     <!-- Back to Home -->
-    <div class="flex justify-center">
-      <router-link to="/" class="btn">
-        Retreat  🐓
-      </router-link>
-    </div>
+    <button class="btn absolute bottom-8 right-8">
+      <router-link to="/">Retreat 🐓</router-link>
+    </button>
   </div>
 </template>
 
@@ -201,26 +199,32 @@ export default {
       const [playerPiece, computerPiece] = this.activePieces;
       this.isActivelyBattling = true;
 
-      // Determine battle values
       this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
       this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
-
-      // Reveal battle values
       this.showBattleValues = true;
 
-      // Determine winner
       if (this.playerPieceValue > this.computerPieceValue) {
         this.battleResult = 'player';
         this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
+        this.battleBench.forEach(piece => {
+          this.playerScore += piece.classicalValue;
+        });
+
+        this.battleBench = [];
       } else if (this.computerPieceValue > this.playerPieceValue) {
         this.battleResult = 'computer';
         this.computerScore += playerPiece.classicalValue + computerPiece.classicalValue;
+
+        this.battleBench.forEach(piece => {
+          this.computerScore += piece.classicalValue;
+        });
+
+        this.battleBench = [];
       } else {
         this.battleResult = 'tie';
         this.battleBench.push(playerPiece, computerPiece);
       }
 
-      // Reset state after a short delay to simulate battle completion
       setTimeout(() => {
         this.resetActivePieces();
       }, 1000);
