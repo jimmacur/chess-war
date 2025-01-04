@@ -15,7 +15,7 @@
     </div>
 
     <!-- Player Pieces -->
-    <div class="absolute top-40 left-8 grid grid-cols-3 gap-2">
+    <div class="absolute bg-[#81B64C] rounded-lg p-5 top-40 left-8 grid grid-cols-3 gap-2 shadow-2xl">
       <img
         v-for="piece in playerPieces"
         :key="piece.id"
@@ -26,7 +26,7 @@
     </div>
 
     <!-- Title -->
-    <h1 class="text-4xl font-bold text-center mt-16 mb-10">Chess War</h1>
+    <h1 class="text-6xl font-bold text-center mt-16">Chess War</h1>
 
     <!-- Computer Score and Avatar -->
     <div class="absolute top-8 right-12 flex items-center space-x-4">
@@ -42,7 +42,7 @@
     </div>
 
     <!-- Computer Pieces -->
-    <div class="absolute top-40 right-8 grid grid-cols-3 gap-2">
+    <div class="absolute bg-[#81B64C] rounded-lg p-5 top-40 right-8 grid grid-cols-3 gap-2 shadow-2xl">
       <img
         v-for="piece in computerPieces"
         :key="piece.id"
@@ -53,11 +53,11 @@
     </div>
 
     <!-- Battlefield -->
-    <div class="flex items-center justify-center w-[300px] h-[400px] bg-green-300 rounded-lg shadow-lg mt-20 mx-auto relative">
+    <div class="relative mx-auto flex items-center justify-center w-[400px] h-[450px] bg-[#D9C2A3] rounded-lg shadow-2xl mt-5">
       <p v-if="!activePieces.length" class="text-black text-3xl">Battlefield is ready</p>
 
       <!-- Active Pieces -->
-      <div v-if="activePieces.length === 2" class="flex justify-center items-center">
+      <div v-if="activePieces.length === 2" class="absolute flex justify-center items-center space-x-8">
         <!-- Player Piece -->
         <div class="flex flex-col items-center space-y-2">
           <img
@@ -68,14 +68,11 @@
             :class="battleResult === 'player' ? 'scale-125' : ''"
           />
           <div class="flex flex-col items-center space-y-1">
-            <p class="text-sm text-black">Potential</p>
-            <p class="text-sm text-black">Power</p>
-            <p 
-              v-if="!showBattleValues" 
-              class="text-2xl font-bold text-black"
-            >
-              {{ activePieces[0].classicalValue }}
+            <p class="text-sm text-black">
+              {{ isActivelyBattling ? "Battle" : "Potential" }}
             </p>
+            <p class="text-sm text-black">Power</p>
+            <p v-if="!showBattleValues" class="text-2xl font-bold text-black">{{ activePieces[0].classicalValue }}</p>
             <p
               v-if="showBattleValues"
               class="text-2xl font-bold text-black transition-all"
@@ -85,7 +82,7 @@
             </p>
           </div>
         </div>
-        <div class="text-2xl text-black font-bold mx-10">VS</div>
+        <div class="text-2xl text-black font-bold">VS</div>
         <!-- Computer Piece -->
         <div class="flex flex-col items-center space-y-2">
           <img
@@ -96,14 +93,11 @@
             :class="battleResult === 'computer' ? 'scale-125' : ''"
           />
           <div class="flex flex-col items-center space-y-1">
-            <p class="text-sm text-black">Potential</p>
-            <p class="text-sm text-black">Power</p>
-            <p 
-              v-if="!showBattleValues"
-              class="text-2xl font-bold text-black"
-            >
-              {{ activePieces[1].classicalValue }}
+            <p class="text-sm text-black">
+              {{ isActivelyBattling ? "Battle" : "Potential" }}
             </p>
+            <p class="text-sm text-black">Power</p>
+            <p v-if="!showBattleValues" class="text-2xl font-bold text-black">{{ activePieces[1].classicalValue }}</p>
             <p
               v-if="showBattleValues"
               class="text-2xl font-bold text-black transition-all"
@@ -114,21 +108,17 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Battle Holding Zone -->
-    <div class="m-5 flex justify-center">
-      <div v-if="holdingZone.length" class="text-center">
-        <h3 class="text-lg font-bold mb-4">War Chest</h3>
-        <div class="flex flex-wrap justify-center gap-4 max-w-lg mx-auto">
-          <img
-            v-for="(piece, index) in holdingZone"
-            :key="index"
-            :src="piece.src"
-            :alt="piece.name"
-            class="w-12 h-12"
-          />
-        </div>
+      <!-- Battle Bench -->
+      <div class="absolute bottom-2 left-2 flex items-center space-x-2">
+        <p v-if="battleBench.length > 0" class="text-black text-sm">Battle Bench:</p>
+        <img
+          v-for="piece in battleBench"
+          :key="piece.id"
+          :src="piece.src"
+          :alt="piece.name"
+          class="w-8 h-8"
+        />
       </div>
     </div>
 
@@ -191,7 +181,8 @@ export default {
       playerPieceValue: 0,
       computerPieceValue: 0,
       isBattleMode: false,
-      holdingZone: [] as ChessPiece[],
+      isActivelyBattling: false,
+      battleBench: [] as ChessPiece[],
       showBattleValues: false,
       battleResult: "",
     };
@@ -280,12 +271,14 @@ export default {
         this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
         this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
         this.isBattleMode = true;
+        this.isActivelyBattling = false;
       }
     },
     battle() {
       if (this.activePieces.length !== 2) return;
 
       const [playerPiece, computerPiece] = this.activePieces;
+      this.isActivelyBattling = true;
 
       // Determine battle values
       this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
@@ -298,20 +291,20 @@ export default {
       if (this.playerPieceValue > this.computerPieceValue) {
         this.battleResult = 'player';
         this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
-        this.holdingZone.forEach(piece => {
+        this.battleBench.forEach(piece => {
           this.playerScore += piece.classicalValue;
         });
-        this.holdingZone = [];
+        this.battleBench = [];
       } else if (this.computerPieceValue > this.playerPieceValue) {
         this.battleResult = 'computer';
         this.computerScore += playerPiece.classicalValue + computerPiece.classicalValue;
-        this.holdingZone.forEach(piece => {
+        this.battleBench.forEach(piece => {
           this.computerScore += piece.classicalValue;
         });
-        this.holdingZone = [];
+        this.battleBench = [];
       } else {
         this.battleResult = 'tie';
-        this.holdingZone.push(playerPiece, computerPiece);
+        this.battleBench.push(playerPiece, computerPiece);
       }
 
       // Trigger animations
@@ -356,6 +349,7 @@ export default {
       this.showBattleValues = false;
       this.battleResult = '';
       this.isBattleMode = false;
+      this.isActivelyBattling = false;
     },
   },
 };
