@@ -3,7 +3,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     @click.self="$emit('close')"
   >
-    <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg max-w-lg w-full max-h-[90vh] overflow-y-auto relative" >
+    <div class="bg-gray-700 text-white p-6 rounded-lg shadow-lg max-w-lg w-full max-h-[90vh] overflow-y-auto relative" >
       <!-- Close Button -->
       <button
         @click="$emit('close')"

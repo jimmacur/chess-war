@@ -1,6 +1,6 @@
 // PlayVsComputer.vue
 <template>
-  <div class="min-h-screen bg-gray-900 text-white">
+  <div class="min-h-screen">
     <!-- Player Score and Avatar -->
     <div class="absolute top-8 left-12 flex items-center space-x-4">
       <img
@@ -54,7 +54,7 @@
 
     <!-- Battlefield -->
     <div class="flex items-center justify-center w-[300px] h-[400px] bg-green-300 rounded-lg shadow-lg mt-20 mx-auto relative">
-      <p v-if="!activePieces.length" class="text-black text-xl">Battle field is ready</p>
+      <p v-if="!activePieces.length" class="text-black text-3xl">Battlefield is ready</p>
 
       <!-- Active Pieces -->
       <div v-if="activePieces.length === 2" class="flex justify-center items-center">
@@ -117,7 +117,7 @@
     </div>
 
     <!-- Battle Holding Zone -->
-    <div class="mt-10 flex justify-center">
+    <div class="m-5 flex justify-center">
       <div v-if="holdingZone.length" class="text-center">
         <h3 class="text-lg font-bold mb-4">War Chest</h3>
         <div class="flex flex-wrap justify-center gap-4 max-w-lg mx-auto">
@@ -133,7 +133,7 @@
     </div>
 
     <!-- Battle Button -->
-    <div class="mt-10 flex justify-center">
+    <div class="flex justify-center">
       <button
         class="btn"
         @click="isBattleMode ? battle() : beginBattle()"
@@ -144,7 +144,7 @@
     </div>
 
     <!-- Back to Home -->
-    <div class="mt-10 flex justify-center">
+    <div class="flex justify-center">
       <router-link to="/" class="btn">
         Retreat  🐓
       </router-link>
