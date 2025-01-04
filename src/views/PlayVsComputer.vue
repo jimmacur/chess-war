@@ -1,27 +1,18 @@
 // PlayVsComputer.vue
 <template>
   <div class="min-h-screen">
+    
+    <!-- Title -->
+    <h1 class="text-6xl font-bold text-center mt-16">Chess War</h1>
+    
+    <!-- Player Score -->
     <ScoreCard
       :name="playerData.name"
       :avatarSrc="playerData.avatar.src"
       :score="playerScore"
       class="absolute top-8 left-12"
     />
-
-    <!-- Player Pieces -->
-    <div class="absolute bg-[#81B64C] rounded-lg p-5 top-40 left-8 grid grid-cols-3 gap-2 shadow-2xl">
-      <img
-        v-for="piece in playerPieces"
-        :key="piece.id"
-        :src="piece.src"
-        :alt="piece.name"
-        class="w-20 h-20"
-      />
-    </div>
-
-    <!-- Title -->
-    <h1 class="text-6xl font-bold text-center mt-16">Chess War</h1>
-
+    
     <!-- Computer Score -->
     <ScoreCard
       :name="computerData.name"
@@ -30,16 +21,11 @@
       class="absolute top-8 right-12"
     />
 
+    <!-- Player Pieces -->
+    <Pieces :pieces="playerPieces" position="left" />
+
     <!-- Computer Pieces -->
-    <div class="absolute bg-[#81B64C] rounded-lg p-5 top-40 right-8 grid grid-cols-3 gap-2 shadow-2xl">
-      <img
-        v-for="piece in computerPieces"
-        :key="piece.id"
-        :src="piece.src"
-        :alt="piece.name"
-        class="w-20 h-20"
-      />
-    </div>
+    <Pieces :pieces="computerPieces" position="right" />
 
     <!-- Battlefield -->
     <div class="relative mx-auto flex items-center justify-center w-[400px] h-[450px] bg-[#D9C2A3] rounded-lg shadow-2xl mt-5">
@@ -133,6 +119,7 @@
 
 <script lang="ts">
 import ScoreCard from "../components/features/ScoreCard.vue";
+import Pieces from "../components/features/Pieces.vue";
 
 interface ChessPiece {
   id: string;
@@ -152,7 +139,7 @@ interface PlayerData {
 
 export default {
   name: "PlayVsComputer",
-  components: { ScoreCard },
+  components: { ScoreCard, Pieces },
   data() {
     return {
       playerData: {
