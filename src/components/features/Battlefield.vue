@@ -1,5 +1,5 @@
 <template>
-  <div class="relative mx-auto flex items-center justify-center w-[400px] h-[450px] bg-[#D9C2A3] rounded-lg shadow-2xl mt-5">
+  <div class="relative mx-auto flex items-center justify-center w-[400px] h-[450px] bg-[#D9C2A3] rounded-lg shadow-2xl mt-10">
     <p v-if="!activePieces.length" class="text-black text-3xl">Battlefield is ready</p>
 
     <!-- Active Pieces -->
