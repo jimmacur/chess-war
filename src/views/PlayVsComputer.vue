@@ -95,14 +95,14 @@
         @click="isBattleMode ? battle() : beginBattle()"
         :disabled="!canBattle"
       >
-        {{ isBattleMode ? "Battle" : "Begin" }}
+        {{ isBattleMode ? "Battle" : "Prepare for battle" }}
       </button>
     </div>
 
     <!-- Back to Home -->
     <div class="mt-10 flex justify-center">
       <router-link to="/" class="btn">
-        Back to Home
+        Retreat  🐓
       </router-link>
     </div>
   </div>
