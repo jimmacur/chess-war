@@ -32,8 +32,8 @@
 </template>
 
 <script lang="ts">
-import AboutModal from "../components/AboutChessWar.vue";
-import PlayVsComputerModal from "../components/PlayVsComputerModal.vue";
+import AboutModal from "../components/features/AboutChessWar.vue";
+import PlayVsComputerModal from "../components/features/PlayVsComputerModal.vue";
 
 export default {
   name: "HomeScreen",
