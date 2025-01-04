@@ -1,6 +1,10 @@
 <template>
   <button
-    :class="['btn', buttonType, { disabled: isDisabled }]"
+    :class="[
+      'px-4 py-2 rounded transition-all font-semibold text-center',
+      buttonClasses,
+      { 'opacity-50 cursor-not-allowed': isDisabled }
+    ]"
     :disabled="isDisabled"
     @click="handleClick"
   >
@@ -14,7 +18,7 @@ export default {
   props: {
     buttonType: {
       type: String,
-      default: 'primary', // Options: 'primary', 'secondary', 'danger', etc.
+      default: 'primary', 
     },
     isDisabled: {
       type: Boolean,
@@ -22,7 +26,21 @@ export default {
     },
     onClick: {
       type: Function,
-      default: () => {}, // A no-op function by default
+      default: () => {},
+    },
+  },
+  computed: {
+    buttonClasses(): string {
+      switch (this.buttonType) {
+        case 'primary':
+          return 'bg-blue-500 text-white hover:bg-blue-600';
+        case 'secondary':
+          return 'bg-gray-500 text-white hover:bg-gray-600';
+        case 'danger':
+          return 'bg-red-500 text-white hover:bg-red-600';
+        default:
+          return 'bg-gray-300 text-black hover:bg-gray-400';
+      }
     },
   },
   methods: {
@@ -34,29 +52,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.btn {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.btn.primary {
-  background-color: #007bff;
-  color: #fff;
-}
-.btn.secondary {
-  background-color: #6c757d;
-  color: #fff;
-}
-.btn.danger {
-  background-color: #dc3545;
-  color: #fff;
-}
-.btn.disabled {
-  background-color: #d6d6d6;
-  cursor: not-allowed;
-}
-</style>

@@ -1,18 +1,12 @@
 // PlayVsComputer.vue
 <template>
   <div class="min-h-screen">
-    <!-- Player Score and Avatar -->
-    <div class="absolute top-8 left-12 flex items-center space-x-4">
-      <img
-        :src="playerData.avatar.src || '/src/assets/default-avatar.png'"
-        :alt="playerData.avatar.name || 'Player Avatar'"
-        class="w-16 h-16 rounded-full"
-      />
-      <div class="w-32 h-24 bg-gray-800 text-white p-2 rounded shadow-lg flex flex-col items-center justify-center">
-        <h2 class="text-sm font-semibold text-center">{{ playerData.name }}</h2>
-        <p class="text-2xl font-bold">{{ playerScore }}</p>
-      </div>
-    </div>
+    <ScoreCard
+      :name="playerData.name"
+      :avatarSrc="playerData.avatar.src"
+      :score="playerScore"
+      class="absolute top-8 left-12"
+    />
 
     <!-- Player Pieces -->
     <div class="absolute bg-[#81B64C] rounded-lg p-5 top-40 left-8 grid grid-cols-3 gap-2 shadow-2xl">
@@ -28,18 +22,13 @@
     <!-- Title -->
     <h1 class="text-6xl font-bold text-center mt-16">Chess War</h1>
 
-    <!-- Computer Score and Avatar -->
-    <div class="absolute top-8 right-12 flex items-center space-x-4">
-      <div class="w-32 h-24 bg-gray-800 text-white p-2 rounded shadow-lg flex flex-col items-center justify-center">
-        <h2 class="text-sm font-semibold text-center">Computer</h2>
-        <p class="text-2xl font-bold">{{ computerScore }}</p>
-      </div>
-      <img
-        :src="computerData.avatar.src || '/src/assets/default-avatar.png'"
-        :alt="computerData.avatar.name || 'Computer Avatar'"
-        class="w-16 h-16 rounded-full"
-      />
-    </div>
+    <!-- Computer Score -->
+    <ScoreCard
+      :name="computerData.name"
+      :avatarSrc="computerData.avatar.src"
+      :score="computerScore"
+      class="absolute top-8 right-12"
+    />
 
     <!-- Computer Pieces -->
     <div class="absolute bg-[#81B64C] rounded-lg p-5 top-40 right-8 grid grid-cols-3 gap-2 shadow-2xl">
@@ -143,6 +132,8 @@
 </template>
 
 <script lang="ts">
+import ScoreCard from "../components/features/ScoreCard.vue";
+
 interface ChessPiece {
   id: string;
   src: string;
@@ -161,6 +152,7 @@ interface PlayerData {
 
 export default {
   name: "PlayVsComputer",
+  components: { ScoreCard },
   data() {
     return {
       playerData: {
