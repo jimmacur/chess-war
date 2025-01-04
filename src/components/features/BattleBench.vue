@@ -12,11 +12,18 @@
 </template>
 
 <script lang="ts">
+interface ChessPiece {
+  id: string;
+  src: string;
+  name: string;
+  classicalValue: number;
+}
+
 export default {
   name: 'BattleBench',
   props: {
     pieces: {
-      type: Array,
+      type: Array as () => ChessPiece[],
       required: true,
     },
   },

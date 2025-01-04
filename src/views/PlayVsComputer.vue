@@ -212,58 +212,18 @@ export default {
       if (this.playerPieceValue > this.computerPieceValue) {
         this.battleResult = 'player';
         this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
-        this.battleBench.forEach(piece => {
-          this.playerScore += piece.classicalValue;
-        });
-        this.battleBench = [];
       } else if (this.computerPieceValue > this.playerPieceValue) {
         this.battleResult = 'computer';
         this.computerScore += playerPiece.classicalValue + computerPiece.classicalValue;
-        this.battleBench.forEach(piece => {
-          this.computerScore += piece.classicalValue;
-        });
-        this.battleBench = [];
       } else {
         this.battleResult = 'tie';
         this.battleBench.push(playerPiece, computerPiece);
       }
 
-      // Trigger animations
-      setTimeout(() => {
-        if (this.battleResult === 'player') {
-          this.animateToPlayerCorner(playerPiece, computerPiece);
-        } else if (this.battleResult === 'computer') {
-          this.animateToComputerCorner(playerPiece, computerPiece);
-        } else {
-          this.resetActivePieces();
-        }
-      }, 1000);
-    },
-    getRandomValue(max: number): number {
-      return Math.floor(Math.random() * (max + 1));
-    },
-    animateToPlayerCorner(playerPiece: ChessPiece, computerPiece: ChessPiece) {
-      this.animatePiece(playerPiece, 'float-to-player');
-      this.animatePiece(computerPiece, 'dissolve');
+      // Reset state after a short delay to simulate battle completion
       setTimeout(() => {
         this.resetActivePieces();
       }, 1000);
-    },
-    animateToComputerCorner(playerPiece: ChessPiece, computerPiece: ChessPiece) {
-      this.animatePiece(playerPiece, 'dissolve');
-      this.animatePiece(computerPiece, 'float-to-computer');
-      setTimeout(() => {
-        this.resetActivePieces();
-      }, 1000);
-    },
-    animatePiece(piece: ChessPiece, animationClass: string) {
-      const pieceElement = document.querySelector(`[data-piece-id="${piece.id}"]`);
-      if (pieceElement) {
-        pieceElement.classList.add(animationClass);
-        setTimeout(() => {
-          pieceElement.classList.remove(animationClass);
-        }, 1000);
-      }
     },
     resetActivePieces() {
       this.activePieces = [];
@@ -272,53 +232,9 @@ export default {
       this.isBattleMode = false;
       this.isActivelyBattling = false;
     },
+    getRandomValue(max: number): number {
+      return Math.floor(Math.random() * (max + 1));
+    },
   },
 };
 </script>
-
-<style scoped>
-@keyframes dissolve {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-}
-
-@keyframes float-to-player {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-300px, -200px) scale(0.5);
-  }
-}
-
-@keyframes float-to-computer {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(300px, -200px) scale(0.5);
-  }
-}
-
-.dissolve {
-  animation: dissolve 1s forwards;
-}
-
-.float-to-player {
-  animation: float-to-player 1s forwards;
-}
-
-.float-to-computer {
-  animation: float-to-computer 1s forwards;
-}
-</style>
