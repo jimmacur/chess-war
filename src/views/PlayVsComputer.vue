@@ -28,74 +28,15 @@
     <Pieces :pieces="computerPieces" position="right" />
 
     <!-- Battlefield -->
-    <div class="relative mx-auto flex items-center justify-center w-[400px] h-[450px] bg-[#D9C2A3] rounded-lg shadow-2xl mt-5">
-      <p v-if="!activePieces.length" class="text-black text-3xl">Battlefield is ready</p>
-
-      <!-- Active Pieces -->
-      <div v-if="activePieces.length === 2" class="absolute flex justify-center items-center space-x-8">
-        <!-- Player Piece -->
-        <div class="flex flex-col items-center space-y-2">
-          <img
-            :src="activePieces[0].src"
-            :alt="activePieces[0].name"
-            :data-piece-id="activePieces[0].id"
-            class="w-[120px] h-[120px] transition-all"
-            :class="battleResult === 'player' ? 'scale-125' : ''"
-          />
-          <div class="flex flex-col items-center space-y-1">
-            <p class="text-sm text-black">
-              {{ isActivelyBattling ? "Battle" : "Potential" }}
-            </p>
-            <p class="text-sm text-black">Power</p>
-            <p v-if="!showBattleValues" class="text-2xl font-bold text-black">{{ activePieces[0].classicalValue }}</p>
-            <p
-              v-if="showBattleValues"
-              class="text-2xl font-bold text-black transition-all"
-              :class="battleResult === 'player' ? 'text-green-500 scale-150' : ''"
-            >
-              {{ playerPieceValue }}
-            </p>
-          </div>
-        </div>
-        <div class="text-2xl text-black font-bold">VS</div>
-        <!-- Computer Piece -->
-        <div class="flex flex-col items-center space-y-2">
-          <img
-            :src="activePieces[1].src"
-            :alt="activePieces[1].name"
-            :data-piece-id="activePieces[1].id"
-            class="w-[120px] h-[120px] transition-all"
-            :class="battleResult === 'computer' ? 'scale-125' : ''"
-          />
-          <div class="flex flex-col items-center space-y-1">
-            <p class="text-sm text-black">
-              {{ isActivelyBattling ? "Battle" : "Potential" }}
-            </p>
-            <p class="text-sm text-black">Power</p>
-            <p v-if="!showBattleValues" class="text-2xl font-bold text-black">{{ activePieces[1].classicalValue }}</p>
-            <p
-              v-if="showBattleValues"
-              class="text-2xl font-bold text-black transition-all"
-              :class="battleResult === 'computer' ? 'text-green-500 scale-150' : ''"
-            >
-              {{ computerPieceValue }}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Battle Bench -->
-      <div class="absolute bottom-2 left-2 flex items-center space-x-2">
-        <p v-if="battleBench.length > 0" class="text-black text-sm">Battle Bench:</p>
-        <img
-          v-for="piece in battleBench"
-          :key="piece.id"
-          :src="piece.src"
-          :alt="piece.name"
-          class="w-8 h-8"
-        />
-      </div>
-    </div>
+    <Battlefield
+      :activePieces="activePieces"
+      :isActivelyBattling="isActivelyBattling"
+      :showBattleValues="showBattleValues"
+      :battleResult="battleResult"
+      :playerPieceValue="playerPieceValue"
+      :computerPieceValue="computerPieceValue"
+      :battleBench="battleBench"
+    />
 
     <!-- Battle Button -->
     <div class="flex justify-center">
@@ -120,6 +61,7 @@
 <script lang="ts">
 import ScoreCard from "../components/features/ScoreCard.vue";
 import Pieces from "../components/features/Pieces.vue";
+import Battlefield from "../components/features/Battlefield.vue";
 
 interface ChessPiece {
   id: string;
@@ -139,7 +81,7 @@ interface PlayerData {
 
 export default {
   name: "PlayVsComputer",
-  components: { ScoreCard, Pieces },
+  components: { ScoreCard, Pieces, Battlefield },
   data() {
     return {
       playerData: {
@@ -161,9 +103,9 @@ export default {
       computerPieceValue: 0,
       isBattleMode: false,
       isActivelyBattling: false,
-      battleBench: [] as ChessPiece[],
       showBattleValues: false,
       battleResult: "",
+      battleBench: [] as ChessPiece[],
     };
   },
   computed: {
