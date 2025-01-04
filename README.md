@@ -25,18 +25,21 @@ This project marked my first experience working with VueJS, and I’ve grown to 
 
 ## Technologies Used
 
-- Frontend: Vue 3, Tailwind CSS, TypeScript
-- State Management: Vue Composition API
+[![Vue.js][Vue.js]][Vue-url]
+
+[![TypeScript][Typescript]][Typescript-url]
+
+[![Tailwind CSS][Tailwind]][Tailwind-url]
 
 ## Installation
 
 1. Clone this repo
 
-`git clone https://github.com/yourusername/chess-war.git`
+    `git clone https://github.com/yourusername/chess-war.git`
 
 2. Navigate to the directory
 
-`cd chess-war`
+    `cd chess-war`
 
 3. `npm install`
 4. `npm run dev`
@@ -53,7 +56,7 @@ This project marked my first experience working with VueJS, and I’ve grown to 
 
 ## Contributors
 
-Jim Macur
+### Jim Macur
 
 - <jim.macur@gmail.com>
 - [linkedIn](https://www.linkedin.com/in/jimmacur/)
@@ -62,4 +65,12 @@ Jim Macur
 ## Acknowledgements
 
 - A big thank you to Lichess for providing the beautiful SVGs of chess pieces used in this project.
-- Special thanks to ChatGPT for generating the creative and hilarious avatar concepts that added a fun touch to the game.
+
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Vue-url]: https://vuejs.org/
+
+[Typescript]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
+[Typescript-url]: https://www.typescriptlang.org/docs/
+
+[Tailwind]: https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white
+[Tailwind-url]: https://v2.tailwindcss.com/docs
