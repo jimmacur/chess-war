@@ -52,22 +52,66 @@
       />
     </div>
 
-    <!-- Chess Board -->
-    <div class="flex items-center justify-center w-full max-w-2xl h-80 bg-gray-800 rounded-lg shadow-lg mx-auto relative">
-      <p v-if="!activePieces.length" class="text-gray-400">Battle field is ready</p>
+    <!-- Battlefield -->
+    <div class="flex items-center justify-center w-[300px] h-[400px] bg-green-300 rounded-lg shadow-lg mt-20 mx-auto relative">
+      <p v-if="!activePieces.length" class="text-black text-xl">Battle field is ready</p>
 
       <!-- Active Pieces -->
       <div v-if="activePieces.length === 2" class="flex justify-center items-center">
+        <!-- Player Piece -->
         <div class="flex flex-col items-center space-y-2">
-          <img :src="activePieces[0].src" :alt="activePieces[0].name" class="w-12 h-12" />
-          <p class="text-sm">Classical Value: {{ activePieces[0].classicalValue }}</p>
-          <p class="text-lg font-bold">Battle Value: {{ playerPieceValue }}</p>
+          <img
+            :src="activePieces[0].src"
+            :alt="activePieces[0].name"
+            :data-piece-id="activePieces[0].id"
+            class="w-[120px] h-[120px] transition-all"
+            :class="battleResult === 'player' ? 'scale-125' : ''"
+          />
+          <div class="flex flex-col items-center space-y-1">
+            <p class="text-sm text-black">Potential</p>
+            <p class="text-sm text-black">Power</p>
+            <p 
+              v-if="!showBattleValues" 
+              class="text-2xl font-bold text-black"
+            >
+              {{ activePieces[0].classicalValue }}
+            </p>
+            <p
+              v-if="showBattleValues"
+              class="text-2xl font-bold text-black transition-all"
+              :class="battleResult === 'player' ? 'text-green-500 scale-150' : ''"
+            >
+              {{ playerPieceValue }}
+            </p>
+          </div>
         </div>
-        <div class="text-2xl font-bold mx-4">VS</div>
+        <div class="text-2xl text-black font-bold mx-10">VS</div>
+        <!-- Computer Piece -->
         <div class="flex flex-col items-center space-y-2">
-          <img :src="activePieces[1].src" :alt="activePieces[1].name" class="w-12 h-12" />
-          <p class="text-sm">Classical Value: {{ activePieces[1].classicalValue }}</p>
-          <p class="text-lg font-bold">Battle Value: {{ computerPieceValue }}</p>
+          <img
+            :src="activePieces[1].src"
+            :alt="activePieces[1].name"
+            :data-piece-id="activePieces[1].id"
+            class="w-[120px] h-[120px] transition-all"
+            :class="battleResult === 'computer' ? 'scale-125' : ''"
+          />
+          <div class="flex flex-col items-center space-y-1">
+            <p class="text-sm text-black">Potential</p>
+            <p class="text-sm text-black">Power</p>
+            <p 
+              v-if="!showBattleValues"
+              class="text-2xl font-bold text-black"
+            >
+              {{ activePieces[1].classicalValue }}
+            </p>
+            <p
+              v-if="showBattleValues"
+              class="text-2xl font-bold text-black transition-all"
+              :class="battleResult === 'computer' ? 'text-green-500 scale-150' : ''"
+            >
+              {{ computerPieceValue }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -88,7 +132,7 @@
       </div>
     </div>
 
-    <!-- Begin Button -->
+    <!-- Battle Button -->
     <div class="mt-10 flex justify-center">
       <button
         class="btn"
@@ -148,6 +192,8 @@ export default {
       computerPieceValue: 0,
       isBattleMode: false,
       holdingZone: [] as ChessPiece[],
+      showBattleValues: false,
+      battleResult: "",
     };
   },
   computed: {
@@ -240,31 +286,124 @@ export default {
       if (this.activePieces.length !== 2) return;
 
       const [playerPiece, computerPiece] = this.activePieces;
-      
-      // Show the result of the battle
+
+      // Determine battle values
+      this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
+      this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
+
+      // Reveal battle values
+      this.showBattleValues = true;
+
+      // Determine winner
       if (this.playerPieceValue > this.computerPieceValue) {
+        this.battleResult = 'player';
         this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
         this.holdingZone.forEach(piece => {
           this.playerScore += piece.classicalValue;
         });
         this.holdingZone = [];
       } else if (this.computerPieceValue > this.playerPieceValue) {
+        this.battleResult = 'computer';
         this.computerScore += playerPiece.classicalValue + computerPiece.classicalValue;
         this.holdingZone.forEach(piece => {
           this.computerScore += piece.classicalValue;
         });
         this.holdingZone = [];
       } else {
-        // It's a tie, move pieces to the holding zone
+        this.battleResult = 'tie';
         this.holdingZone.push(playerPiece, computerPiece);
       }
 
-      this.activePieces = [];
-      this.isBattleMode = false;
+      // Trigger animations
+      setTimeout(() => {
+        if (this.battleResult === 'player') {
+          this.animateToPlayerCorner(playerPiece, computerPiece);
+        } else if (this.battleResult === 'computer') {
+          this.animateToComputerCorner(playerPiece, computerPiece);
+        } else {
+          this.resetActivePieces();
+        }
+      }, 1000);
     },
     getRandomValue(max: number): number {
       return Math.floor(Math.random() * (max + 1));
     },
+    animateToPlayerCorner(playerPiece: ChessPiece, computerPiece: ChessPiece) {
+      this.animatePiece(playerPiece, 'float-to-player');
+      this.animatePiece(computerPiece, 'dissolve');
+      setTimeout(() => {
+        this.resetActivePieces();
+      }, 1000);
+    },
+    animateToComputerCorner(playerPiece: ChessPiece, computerPiece: ChessPiece) {
+      this.animatePiece(playerPiece, 'dissolve');
+      this.animatePiece(computerPiece, 'float-to-computer');
+      setTimeout(() => {
+        this.resetActivePieces();
+      }, 1000);
+    },
+    animatePiece(piece: ChessPiece, animationClass: string) {
+      const pieceElement = document.querySelector(`[data-piece-id="${piece.id}"]`);
+      if (pieceElement) {
+        pieceElement.classList.add(animationClass);
+        setTimeout(() => {
+          pieceElement.classList.remove(animationClass);
+        }, 1000);
+      }
+    },
+    resetActivePieces() {
+      this.activePieces = [];
+      this.showBattleValues = false;
+      this.battleResult = '';
+      this.isBattleMode = false;
+    },
   },
 };
 </script>
+
+<style scoped>
+@keyframes dissolve {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes float-to-player {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-300px, -200px) scale(0.5);
+  }
+}
+
+@keyframes float-to-computer {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(300px, -200px) scale(0.5);
+  }
+}
+
+.dissolve {
+  animation: dissolve 1s forwards;
+}
+
+.float-to-player {
+  animation: float-to-player 1s forwards;
+}
+
+.float-to-computer {
+  animation: float-to-computer 1s forwards;
+}
+</style>
