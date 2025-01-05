@@ -1,10 +1,9 @@
 // PlayVsComputer.vue
 <template>
   <div class="min-h-screen">
-    
     <!-- Title -->
     <h1 class="text-6xl font-bold text-center mt-16">Chess War</h1>
-    
+
     <!-- Player Score -->
     <ScoreCard
       :name="playerData.name"
@@ -12,7 +11,7 @@
       :score="playerScore"
       class="absolute top-8 left-12"
     />
-    
+
     <!-- Computer Score -->
     <ScoreCard
       :name="computerData.name"
@@ -22,10 +21,18 @@
     />
 
     <!-- Player Pieces -->
-    <Pieces :pieces="playerPieces" position="left" />
+    <Pieces
+      v-if="playerPieces.length > 0" 
+      :pieces="playerPieces" 
+      position="left" 
+    />
 
     <!-- Computer Pieces -->
-    <Pieces :pieces="computerPieces" position="right" />
+    <Pieces 
+      v-if="computerPieces.length > 0"
+      :pieces="computerPieces" 
+      position="right" 
+    />
 
     <!-- Battlefield -->
     <Battlefield
@@ -42,7 +49,7 @@
     <div class="flex justify-center mt-8">
       <button
         class="btn w-48 text-center"
-        :disabled="!canBattle"
+        :disabled="!canBattle || isButtonDisabled || !activePiecesValid"
         @click="isBattleMode ? battle() : beginBattle()"
       >
         {{ isBattleMode ? "Battle" : "Prepare for battle" }}
@@ -55,11 +62,7 @@
     </button>
 
     <!-- Winner Modal -->
-    <WinnerModal
-      :show="showWinnerModal"
-      :winner="winner"
-      @reset="resetGame"
-    />
+    <WinnerModal :show="showWinnerModal" :winner="winner" @reset="resetGame" />
   </div>
 </template>
 
@@ -78,7 +81,7 @@ interface ChessPiece {
 
 interface PlayerData {
   name: string;
-  side: 'white' | 'black';
+  side: "white" | "black";
   avatar: {
     src: string;
     name: string;
@@ -93,12 +96,18 @@ export default {
       playerData: {
         name: "Player",
         side: "white",
-        avatar: { src: "/src/assets/default-avatar.png", name: "Player Avatar" },
+        avatar: {
+          src: "/src/assets/default-avatar.png",
+          name: "Player Avatar",
+        },
       } as PlayerData,
       computerData: {
         name: "Computer",
         side: "black",
-        avatar: { src: "/src/assets/default-avatar.png", name: "Computer Avatar" },
+        avatar: {
+          src: "/src/assets/default-avatar.png",
+          name: "Computer Avatar",
+        },
       } as PlayerData,
       showWinnerModal: false,
       winner: null as {
@@ -118,13 +127,24 @@ export default {
       showBattleValues: false,
       battleResult: "",
       battleBench: [] as ChessPiece[],
+      isButtonDisabled: false,
     };
   },
   computed: {
     canBattle(): boolean {
       return (
-        (!this.isBattleMode && this.playerPieces.length > 0 && this.computerPieces.length > 0) ||
+        (!this.isBattleMode &&
+          this.playerPieces.length > 0 &&
+          this.computerPieces.length > 0) ||
         (this.isBattleMode && this.activePieces.length === 2)
+      );
+    },
+    activePiecesValid(): boolean {
+      return (
+        (this.isBattleMode && this.activePieces.length === 2) ||
+        (!this.isBattleMode &&
+          this.playerPieces.length > 0 &&
+          this.computerPieces.length > 0)
       );
     },
   },
@@ -162,14 +182,14 @@ export default {
         };
       }
     },
-    initializePieces(side: 'white' | 'black'): ChessPiece[] {
+    initializePieces(side: "white" | "black"): ChessPiece[] {
       const pieces: ChessPiece[] = [];
       const piecesConfig = [
-        { name: 'pawn', value: 1, count: 8 },
-        { name: 'bishop', value: 3, count: 2 },
-        { name: 'knight', value: 3, count: 2 },
-        { name: 'rook', value: 5, count: 2 },
-        { name: 'queen', value: 9, count: 1 },
+        { name: "pawn", value: 1, count: 8 },
+        { name: "bishop", value: 3, count: 2 },
+        { name: "knight", value: 3, count: 2 },
+        { name: "rook", value: 5, count: 2 },
+        { name: "queen", value: 9, count: 1 },
       ];
 
       piecesConfig.forEach(({ name, value, count }) => {
@@ -187,7 +207,7 @@ export default {
     },
     getRandomPiece(pieces: ChessPiece[]): ChessPiece | null {
       if (pieces.length === 0) return null;
-      
+
       const randomIndex = Math.floor(Math.random() * pieces.length);
       return pieces.splice(randomIndex, 1)[0];
     },
@@ -198,62 +218,81 @@ export default {
       if (playerPiece && computerPiece) {
         this.activePieces = [playerPiece, computerPiece];
         this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
-        this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
+        this.computerPieceValue = this.getRandomValue(
+          computerPiece.classicalValue
+        );
         this.isBattleMode = true;
         this.isActivelyBattling = false;
       }
     },
     battle() {
       if (this.activePieces.length !== 2) return;
+      this.isButtonDisabled = true;
 
       const [playerPiece, computerPiece] = this.activePieces;
       this.isActivelyBattling = true;
 
       this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
-      this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
+      this.computerPieceValue = this.getRandomValue(
+        computerPiece.classicalValue
+      );
       this.showBattleValues = true;
 
       if (this.playerPieceValue > this.computerPieceValue) {
-        this.battleResult = 'player';
-        this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
-        this.battleBench.forEach(piece => {
+        this.battleResult = "player";
+        this.playerScore +=
+          playerPiece.classicalValue + computerPiece.classicalValue;
+        this.battleBench.forEach((piece) => {
           this.playerScore += piece.classicalValue;
         });
 
         this.battleBench = [];
       } else if (this.computerPieceValue > this.playerPieceValue) {
-        this.battleResult = 'computer';
-        this.computerScore += playerPiece.classicalValue + computerPiece.classicalValue;
+        this.battleResult = "computer";
+        this.computerScore +=
+          playerPiece.classicalValue + computerPiece.classicalValue;
 
-        this.battleBench.forEach(piece => {
+        this.battleBench.forEach((piece) => {
           this.computerScore += piece.classicalValue;
         });
 
         this.battleBench = [];
       } else {
-        this.battleResult = 'tie';
+        this.battleResult = "tie";
         this.battleBench.push(playerPiece, computerPiece);
       }
 
-      if (this.playerPieces.length === 0 && this.computerPieces.length === 0) {
-        this.declareWinner();
-      } else {
-        setTimeout(() => {
+      setTimeout(() => {
+        if (
+          this.playerPieces.length === 0 &&
+          this.computerPieces.length === 0
+        ) {
+          this.declareWinner();
+        } else {
           this.resetActivePieces();
-        }, 1000);
-      }
+          this.isButtonDisabled = false;
+        }
+      }, 1000);
     },
     declareWinner() {
       this.winner =
         this.playerScore > this.computerScore
-          ? { name: this.playerData.name, avatar: this.playerData.avatar, score: this.playerScore }
-          : { name: this.computerData.name, avatar: this.computerData.avatar, score: this.computerScore };
+          ? {
+              name: this.playerData.name,
+              avatar: this.playerData.avatar,
+              score: this.playerScore,
+            }
+          : {
+              name: this.computerData.name,
+              avatar: this.computerData.avatar,
+              score: this.computerScore,
+            };
       this.showWinnerModal = true;
     },
     resetActivePieces() {
       this.activePieces = [];
       this.showBattleValues = false;
-      this.battleResult = '';
+      this.battleResult = "";
       this.isBattleMode = false;
       this.isActivelyBattling = false;
     },
@@ -262,17 +301,20 @@ export default {
     },
     resetGame() {
       this.showWinnerModal = false;
-      this.playerPieces = this.initializePieces(this.playerData.side);
-      this.computerPieces = this.initializePieces(this.computerData.side);
       this.playerScore = 0;
       this.computerScore = 0;
+      this.playerPieces = this.initializePieces(this.playerData.side);
+      this.computerPieces = this.initializePieces(this.computerData.side);
       this.activePieces = [];
       this.battleBench = [];
+      this.battleResult = "";
+      this.playerPieceValue = 0;
+      this.computerPieceValue = 0;
       this.isBattleMode = false;
-      this.showBattleValues = false;
-      this.battleResult = '';
+      this.isButtonDisabled = false;
       this.isActivelyBattling = false;
-    },  
+      this.showBattleValues = false;
+    },
   },
 };
 </script>
