@@ -15,7 +15,11 @@ module.exports = {
     "justify-center",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'lg-sm': '900px',
+      },
+    },
   },
   plugins: [],
 };
