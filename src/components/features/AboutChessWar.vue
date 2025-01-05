@@ -43,7 +43,7 @@
               <td class="px-4 py-2 flex items-center">
                 Pawn
                 <img
-                  src="/src/assets/pieces/black-pawn.svg"
+                  src="/assets/pieces/black-pawn.svg"
                   alt="Black Pawn"
                   class="inline-block h-8 w-6 mr-2"
                 />
@@ -54,7 +54,7 @@
               <td class="px-4 py-2 flex items-center">
                 Bishop
                 <img
-                  src="/src/assets/pieces/black-bishop.svg"
+                  src="/assets/pieces/black-bishop.svg"
                   alt="Black Bishop"
                   class="inline-block h-8 w-6 mr-2"
                 />
@@ -65,7 +65,7 @@
               <td class="px-4 py-2 flex items-center">
                 Knight
                 <img
-                  src="/src/assets/pieces/black-knight.svg"
+                  src="/assets/pieces/black-knight.svg"
                   alt="Black Knight"
                   class="inline-block h-8 w-6 mr-2"
                 />
@@ -76,7 +76,7 @@
               <td class="px-4 py-2 flex items-center">
                 Rook
                 <img
-                  src="/src/assets/pieces/black-rook.svg"
+                  src="/assets/pieces/black-rook.svg"
                   alt="Black Rook"
                   class="inline-block h-8 w-6 mr-2"
                 />
@@ -87,7 +87,7 @@
               <td class="px-4 py-2 flex items-center">
                 Queen
                 <img
-                  src="/src/assets/pieces/black-queen.svg"
+                  src="/assets/pieces/black-queen.svg"
                   alt="Black Queen"
                   class="inline-block h-8 w-6 mr-2"
                 />
@@ -98,7 +98,7 @@
               <td class="px-4 py-2 flex items-center">
                 King
                 <img
-                  src="/src/assets/pieces/black-king.svg"
+                  src="/assets/pieces/black-king.svg"
                   alt="Black King"
                   class="inline-block h-8 w-6 mr-2"
                 />

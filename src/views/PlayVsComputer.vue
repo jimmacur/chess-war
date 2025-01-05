@@ -106,7 +106,7 @@ export default {
         name: "Player",
         side: "white",
         avatar: {
-          src: "/src/assets/default-avatar.png",
+          src: "/assets/default-avatar.png",
           name: "Player Avatar",
         },
       } as PlayerData,
@@ -114,7 +114,7 @@ export default {
         name: "Computer",
         side: "black",
         avatar: {
-          src: "/src/assets/default-avatar.png",
+          src: "/assets/default-avatar.png",
           name: "Computer Avatar",
         },
       } as PlayerData,
@@ -173,7 +173,7 @@ export default {
           name: parsed.name || "Player",
           side: parsed.side || "white",
           avatar: {
-            src: parsed.avatar?.src || "/src/assets/default-avatar.png",
+            src: parsed.avatar?.src || "/assets/default-avatar.png",
             name: parsed.avatar?.name || "Player Avatar",
           },
         };
@@ -185,7 +185,7 @@ export default {
           name: parsed.name || "Computer",
           side: parsed.side || "black",
           avatar: {
-            src: parsed.avatar?.src || "/src/assets/default-avatar.png",
+            src: parsed.avatar?.src || "/assets/default-avatar.png",
             name: parsed.avatar?.name || "Computer Avatar",
           },
         };
@@ -205,7 +205,7 @@ export default {
         for (let i = 0; i < count; i++) {
           pieces.push({
             id: `${side}-${name}-${i}`,
-            src: `/src/assets/pieces/${side}-${name}.svg`,
+            src: `/assets/pieces/${side}-${name}.svg`,
             name: `${side} ${name}`,
             classicalValue: value,
           });
