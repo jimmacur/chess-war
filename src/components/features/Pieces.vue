@@ -13,7 +13,7 @@
       :key="piece.id"
       :src="piece.src"
       :alt="piece.name"
-      class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
+      class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-16 lg:h-20 xl:w-24 xl:h-20"
     />
   </div>
 </template>
