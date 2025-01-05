@@ -12,3 +12,4 @@
 body {
   @apply bg-gray-700 text-white min-h-screen flex flex-col items-center justify-center;
 }
+

@@ -2,22 +2,26 @@
 <template>
   <div class="min-h-screen">
     <!-- Title -->
-    <h1 class="text-6xl font-bold text-center mt-16">Chess War</h1>
+    <div class="w-full max-w-screen-xl mx-auto text-center mt-5 pt-0 sm:pt-4">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
+        Chess War
+      </h1>
+    </div>
 
-    <!-- Player Score -->
+    <!-- Player Score (Absolute Left) -->
     <ScoreCard
       :name="playerData.name"
       :avatarSrc="playerData.avatar.src"
       :score="playerScore"
-      class="absolute top-8 left-12"
+      class="absolute top-4 left-0 sm:left-8 sm:top-8 md:left-8"
     />
 
-    <!-- Computer Score -->
+    <!-- Computer Score (Absolute Right) -->
     <ScoreCard
       :name="computerData.name"
       :avatarSrc="computerData.avatar.src"
       :score="computerScore"
-      class="absolute top-8 right-12"
+      class="absolute top-4 right-4 sm:right-8 sm:top-8 md:right-8"
     />
 
     <!-- Player Pieces -->
