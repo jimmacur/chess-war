@@ -17,13 +17,20 @@
 
       <!-- Player Name Input -->
       <div class="mb-4">
-        <label for="playerName" class="block font-semibold mb-2">Player Name:</label>
+        <label for="playerName" class="block font-semibold mb-2">
+          Player Name: <span class="text-red-500">*</span>
+        </label>
         <input
           id="playerName"
+          ref="playerNameInput"
           type="text"
           v-model="playerName"
-          class="w-full p-2 rounded border border-gray-500 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          :class="[
+            'w-full p-2 rounded bg-gray-200 text-black focus:outline-none focus:ring-2',
+            playerNameError ? 'border-red-500 focus:ring-red-500' : 'border-gray-500 focus:ring-blue-500',
+          ]"
         />
+        <p v-if="playerNameError" class="text-red-500 text-sm mt-2">Player Name is required.</p>
       </div>
 
       <!-- Choose Side -->
@@ -67,8 +74,8 @@
       <!-- Begin Button -->
       <div class="text-center mt-6">
         <button
-          class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          @click="startGame"
+          class="btn"
+          @click="validateAndStart"
         >
           Begin
         </button>
@@ -88,6 +95,7 @@ export default {
   data() {
     return {
       playerName: "",
+      playerNameError: false,  
       side: "black",
       selectedAvatar: null as Avatar | null,
       avatars: [
@@ -103,33 +111,49 @@ export default {
       ],  
     };
   },
-  methods: {
-  startGame() {
-    if (!this.selectedAvatar) {
-      alert("Please select an avatar before starting the game.");
-      return;
+  created() {
+    if (this.avatars.length > 0) {
+      this.selectedAvatar = this.avatars[0];
     }
-
-    const computerAvatar = this.avatars[Math.floor(Math.random() * this.avatars.length)];
-
-    const playerData = {
-      name: this.playerName || "Player",
-      side: this.side,
-      avatar: this.selectedAvatar,
-    };
-
-    const computerData = {
-      name: "Computer",
-      side: this.side === "black" ? "white" : "black",
-      avatar: computerAvatar,
-    };
-
-    sessionStorage.setItem("playerData", JSON.stringify(playerData));
-    sessionStorage.setItem("computerData", JSON.stringify(computerData));
-
-    this.$router.push("/game/computer");
   },
-},
+  methods: {
+    validateAndStart() {
+      this.playerNameError = this.playerName.trim() === "";
+
+      if (this.playerNameError) {
+        // Focus the input field if validation fails
+        (this.$refs.playerNameInput as HTMLInputElement)?.focus();
+        return;
+      }
+
+      if (!this.selectedAvatar) {
+        alert("Please select an avatar before starting the game.");
+        return;
+      }
+
+      this.startGame();
+    },
+    startGame() {
+      const computerAvatar = this.avatars[Math.floor(Math.random() * this.avatars.length)];
+
+      const playerData = {
+        name: this.playerName || "Player",
+        side: this.side,
+        avatar: this.selectedAvatar,
+      };
+
+      const computerData = {
+        name: "Computer",
+        side: this.side === "black" ? "white" : "black",
+        avatar: computerAvatar,
+      };
+
+      sessionStorage.setItem("playerData", JSON.stringify(playerData));
+      sessionStorage.setItem("computerData", JSON.stringify(computerData));
+
+      this.$router.push("/game/computer");
+    },
+  },
 };
 </script>
 
