@@ -1,5 +1,12 @@
 <template>
-  <div class="relative mx-auto flex items-center justify-center w-[400px] h-[450px] bg-[#D9C2A3] rounded-lg shadow-2xl mt-10">
+  <div
+    class="relative mx-auto flex items-center justify-center mt-10 md:mt-6 lg:mt-3 bg-[#D9C2A3] rounded-lg shadow-2xl"
+    :class="[
+      'w-[300px] h-[400px]',
+      'md:w-[400px] md:h-[450px]', 
+      'lg:w-[400px] lg:h-[450px]', 
+    ]"
+  >
     <p v-if="!activePieces.length" class="text-black text-3xl">Battlefield is ready</p>
 
     <!-- Active Pieces -->

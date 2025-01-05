@@ -2,7 +2,10 @@
   <div
     :class="[
       'absolute bg-[#81B64C] rounded-lg p-5 grid gap-2 shadow-2xl',
-      position === 'left' ? 'top-40 left-8 grid-cols-3' : 'top-40 right-8 grid-cols-3',
+      position === 'left' ? 'top-40 left-8' : 'top-40 right-8',
+      'hidden sm:grid', // Hide on smaller screens
+      'sm:grid-cols-2', // Default 3 columns for medium screens
+      'lg:grid-cols-3', // Switch to 2 columns for larger screens
     ]"
   >
     <img
@@ -10,7 +13,7 @@
       :key="piece.id"
       :src="piece.src"
       :alt="piece.name"
-      class="w-20 h-20"
+      class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
     />
   </div>
 </template>

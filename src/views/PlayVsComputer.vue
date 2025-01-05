@@ -24,46 +24,51 @@
       class="absolute top-4 right-4 sm:right-8 sm:top-8 md:right-8"
     />
 
-    <!-- Player Pieces -->
-    <Pieces
-      v-if="playerPieces.length > 0" 
-      :pieces="playerPieces" 
-      position="left" 
-    />
+    <div class="flex flex-row align-middle justify-center mt-10">
+      <!-- Player Pieces -->
+      <Pieces
+        v-if="playerPieces.length > 0" 
+        :pieces="playerPieces" 
+        position="left" 
+      />
 
-    <!-- Computer Pieces -->
-    <Pieces 
-      v-if="computerPieces.length > 0"
-      :pieces="computerPieces" 
-      position="right" 
-    />
+      <!-- Computer Pieces -->
+      <Pieces 
+        v-if="computerPieces.length > 0"
+        :pieces="computerPieces" 
+        position="right" 
+      />
 
-    <!-- Battlefield -->
-    <Battlefield
-      :activePieces="activePieces"
-      :isActivelyBattling="isActivelyBattling"
-      :showBattleValues="showBattleValues"
-      :battleResult="battleResult"
-      :playerPieceValue="playerPieceValue"
-      :computerPieceValue="computerPieceValue"
-      :battleBench="battleBench"
-    />
-
-    <!-- Battle Button -->
-    <div class="flex justify-center mt-8">
-      <button
-        class="btn w-48 text-center"
-        :disabled="!canBattle || isButtonDisabled || !activePiecesValid"
-        @click="isBattleMode ? battle() : beginBattle()"
-      >
-        {{ isBattleMode ? "Battle" : "Prepare for battle" }}
-      </button>
+      <!-- Battlefield -->
+      <Battlefield
+        :activePieces="activePieces"
+        :isActivelyBattling="isActivelyBattling"
+        :showBattleValues="showBattleValues"
+        :battleResult="battleResult"
+        :playerPieceValue="playerPieceValue"
+        :computerPieceValue="computerPieceValue"
+        :battleBench="battleBench"
+      />
     </div>
 
-    <!-- Back to Home -->
-    <button class="btn absolute bottom-8 right-8">
-      <router-link to="/">Retreat 🐓</router-link>
-    </button>
+    <!-- Buttons -->
+    <div class="flex flex-col items-center justify-center mt-8 space-y-4 sm:space-y-0 sm:flex-row sm:justify-center">
+      <!-- Battle Button -->
+      <div class="flex justify-center">
+        <button
+          class="btn w-48 text-center"
+          :disabled="!canBattle || isButtonDisabled || !activePiecesValid"
+          @click="isBattleMode ? battle() : beginBattle()"
+        >
+          {{ isBattleMode ? "Battle" : "Prepare for battle" }}
+        </button>
+      </div>
+
+      <!-- Back to Home -->
+      <button class="btn sm:absolute sm:bottom-8 sm:right-8 sm:w-auto">
+        <router-link to="/">Retreat 🐓</router-link>
+      </button>
+    </div>
 
     <!-- Winner Modal -->
     <WinnerModal :show="showWinnerModal" :winner="winner" @reset="resetGame" />
