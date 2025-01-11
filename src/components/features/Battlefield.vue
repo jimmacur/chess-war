@@ -8,9 +8,10 @@
     ]"
   >
     <!-- Winner Message -->
-    <p v-if="winnerMessage" class="absolute top-4 text-black text-2xl font-bold mb-2">
-      {{ winnerMessage }}
-    </p>
+    <div v-if="winnerMessage" class="absolute text-center top-4 font-bold mb-2">
+      <p class="text-2xl text-red-600">Spoils of War!</p>
+      <p class="text-xl text-black" >{{ winnerMessage }}</p>
+    </div>
 
     <!-- Battlefield Content -->
     <p v-if="!activePieces.length" class="text-black text-3xl">Battlefield is ready</p>
@@ -100,75 +101,33 @@ export default {
   },
   computed: {
     winnerMessage(): string | null {
-  console.log('1. Initial conditions:', {
-    showBattleValues: this.showBattleValues,
-    activePiecesLength: this.activePieces.length,
-    battleResult: this.battleResult
-  });
 
-  if (!this.showBattleValues || this.activePieces.length !== 2) return null;
+      if (!this.showBattleValues || this.activePieces.length !== 2) return null;
 
-  console.log('2. Active pieces values:', {
-    piece1: {
-      name: this.activePieces[0].name,
-      value: this.activePieces[0].classicalValue
-    },
-    piece2: {
-      name: this.activePieces[1].name,
-      value: this.activePieces[1].classicalValue
+      const totalBattleBenchValue = this.battleBench.reduce(
+        (acc, piece) => acc + piece.classicalValue,
+        0
+      );
+      
+      let pointsWon = 0;
+      
+      if (this.battleResult === 'player' || this.battleResult === 'computer') {
+        pointsWon = this.activePieces[0].classicalValue + 
+                    this.activePieces[1].classicalValue + 
+                    totalBattleBenchValue;
+      
+      } else if (this.battleResult === 'tie') {
+        return "Tie! Pieces go to the battle bench.";
+      }
+
+      if (this.battleResult === 'player') {
+        return `${this.playerData.name} has won ${pointsWon} points!`;
+      } else if (this.battleResult === 'computer') {
+        return `${this.computerData.name} has won ${pointsWon} points!`;
+      }
+      
+      return null;
     }
-  });
-
-  const totalBattleBenchValue = this.battleBench.reduce(
-    (acc, piece) => acc + piece.classicalValue,
-    0
-  );
-  
-  console.log('3. Battle bench:', {
-    pieces: this.battleBench.map(piece => ({
-      name: piece.name,
-      value: piece.classicalValue
-    })),
-    totalBattleBenchValue,
-    benchLength: this.battleBench.length
-  });
-  
-  let pointsWon = 0;
-  
-  if (this.battleResult === 'player' || this.battleResult === 'computer') {
-    pointsWon = this.activePieces[0].classicalValue + 
-                this.activePieces[1].classicalValue + 
-                totalBattleBenchValue;
-    
-    console.log('4. Points calculation:', {
-      activePiece1Value: this.activePieces[0].classicalValue,
-      activePiece2Value: this.activePieces[1].classicalValue,
-      battleBenchValue: totalBattleBenchValue,
-      totalPointsWon: pointsWon
-    });
-  } else if (this.battleResult === 'tie') {
-    console.log('4. Tie detected - current bench status:', {
-      currentBenchPieces: this.battleBench.map(piece => piece.name),
-      willAdd: [this.activePieces[0].name, this.activePieces[1].name]
-    });
-    return "Tie! Pieces go to the battle bench.";
-  }
-
-  console.log('5. Final message preparation:', {
-    battleResult: this.battleResult,
-    pointsWon,
-    playerName: this.playerData.name,
-    computerName: this.computerData.name
-  });
-
-  if (this.battleResult === 'player') {
-    return `${this.playerData.name} has won ${pointsWon} points!`;
-  } else if (this.battleResult === 'computer') {
-    return `${this.computerData.name} has won ${pointsWon} points!`;
-  }
-  
-  return null;
-}
   }
 };
 </script>
