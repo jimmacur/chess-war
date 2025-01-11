@@ -56,7 +56,7 @@
       <!-- Battle Button -->
       <div class="flex">
         <button
-          class="btn !w-44 py-8"
+          class="btn !w-44"
           :disabled="!canBattle || isButtonDisabled || !activePiecesValid"
           @click="isBattleMode ? battle() : beginBattle()"
         >
