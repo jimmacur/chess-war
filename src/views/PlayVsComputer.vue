@@ -52,15 +52,15 @@
     </div>
 
     <!-- Buttons -->
-    <div class="flex flex-col items-center justify-center mt-8 space-y-4 sm:space-y-0 sm:flex-row sm:justify-center">
+    <div class="flex flex-col items-center mt-4 space-y-4 sm:flex-row sm:justify-center">
       <!-- Battle Button -->
-      <div class="flex justify-center">
+      <div class="flex">
         <button
-          class="btn w-48 text-center"
+          class="btn !w-44 py-8"
           :disabled="!canBattle || isButtonDisabled || !activePiecesValid"
           @click="isBattleMode ? battle() : beginBattle()"
         >
-          {{ isBattleMode ? "Battle" : "Prepare for battle" }}
+          {{ isBattleMode ? "Battle" : "Prepare For War!" }}
         </button>
       </div>
 
