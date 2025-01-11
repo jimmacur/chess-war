@@ -55,6 +55,10 @@ export default {
       type: Number,
       required: true,
     },
+    classicalValue: {
+      type: Number,
+      required: true,
+    },
   },
 };
 </script>

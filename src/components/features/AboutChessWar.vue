@@ -4,7 +4,7 @@
     @mousedown.self="$emit('close')"
   >
     <div
-      class="bg-gray-500 text-white p-8 rounded-lg shadow-lg max-w-3xl w-full h-4/5 overflow-y-auto relative"
+      class="bg-gray-500 flex flex-col text-white p-8 rounded-lg shadow-lg max-w-3xl w-full h-4/5 overflow-y-auto relative"
     >
       <!-- Close Button -->
       <button
@@ -139,6 +139,11 @@
           The game continues until all pieces have battled. The player with the
           highest total score at the end wins and earns the King from their opponent!
         </p>
+      </div>
+
+      <!-- Close Button -->
+      <div class="flex justify-center">
+        <button @click="$emit('close')" class="btn">Back</button>
       </div>
     </div>
   </div>

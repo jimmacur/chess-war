@@ -9,6 +9,7 @@ Players can select custom avatars, track scores, and engage in thrilling battles
 ## Planning
 
 [Figma](https://www.figma.com/board/eyjvUoMaelsgtV4hCH1q8Z/Chess-War?node-id=0-1&p=f&t=EPjosJRO9Er1HrC8-0)
+
 [Github project board](https://github.com/users/jimmacur/projects/15/views/1)
 
 ## Features
@@ -22,8 +23,13 @@ Players can select custom avatars, track scores, and engage in thrilling battles
 
 ### Gameplay Preview
 
-![Gameplay Preview](./public/assets/chess-war-game-play.gif)
+![Gameplay Preview](./public/assets/gameplay.gif)
 *Enjoy the exciting game play of **Chess War**!*
+
+### Winning
+
+![Gameplay Preview](./public/assets/winning.gif)
+*This showcases when the game ends, displaying the winner, and giving the option to play again or go to the homepage.
 
 ### Responsive Design
 
@@ -58,7 +64,7 @@ This project marked my first experience working with VueJS, and I’ve grown to 
 
 3. `npm install`
 4. `npm run dev`
-5. open you browser to [localhost:3000](http://localhost:3000)
+5. open you browser to [localhost:5173](http://localhost:5173)
 6. Enjoy your game!!
 
 ## Future enhancements

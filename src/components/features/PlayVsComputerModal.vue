@@ -72,13 +72,8 @@
       </div>
 
       <!-- Begin Button -->
-      <div class="text-center mt-6">
-        <button
-          class="btn"
-          @click="validateAndStart"
-        >
-          Begin
-        </button>
+      <div class="text-center flex justify-center mt-6">
+        <button class="btn" @click="validateAndStart">Begin</button>
       </div>
     </div>
   </div>

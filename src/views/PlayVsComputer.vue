@@ -48,19 +48,21 @@
         :playerPieceValue="playerPieceValue"
         :computerPieceValue="computerPieceValue"
         :battleBench="battleBench"
+        :playerData="playerData"
+        :computerData="computerData"
       />
     </div>
 
     <!-- Buttons -->
-    <div class="flex flex-col items-center justify-center mt-8 space-y-4 sm:space-y-0 sm:flex-row sm:justify-center">
+    <div class="flex flex-col items-center mt-4 space-y-4 sm:flex-row sm:justify-center">
       <!-- Battle Button -->
-      <div class="flex justify-center">
+      <div class="flex">
         <button
-          class="btn w-48 text-center"
+          class="btn !w-44"
           :disabled="!canBattle || isButtonDisabled || !activePiecesValid"
           @click="isBattleMode ? battle() : beginBattle()"
         >
-          {{ isBattleMode ? "Battle" : "Prepare for battle" }}
+          {{ isBattleMode ? "Battle" : "Prepare For War!" }}
         </button>
       </div>
 
@@ -242,20 +244,15 @@ export default {
       this.isActivelyBattling = true;
 
       this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
-      this.computerPieceValue = this.getRandomValue(
-        computerPiece.classicalValue
-      );
+      this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
       this.showBattleValues = true;
 
       if (this.playerPieceValue > this.computerPieceValue) {
         this.battleResult = "player";
-        this.playerScore +=
-          playerPiece.classicalValue + computerPiece.classicalValue;
+        this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
         this.battleBench.forEach((piece) => {
           this.playerScore += piece.classicalValue;
         });
-
-        this.battleBench = [];
       } else if (this.computerPieceValue > this.playerPieceValue) {
         this.battleResult = "computer";
         this.computerScore +=
@@ -264,24 +261,23 @@ export default {
         this.battleBench.forEach((piece) => {
           this.computerScore += piece.classicalValue;
         });
-
-        this.battleBench = [];
       } else {
         this.battleResult = "tie";
-        this.battleBench.push(playerPiece, computerPiece);
+        this.battleBench = [...this.battleBench, playerPiece, computerPiece];
       }
 
       setTimeout(() => {
-        if (
-          this.playerPieces.length === 0 &&
-          this.computerPieces.length === 0
-        ) {
+        if (this.battleResult !== 'tie') {
+          this.battleBench = [];
+        }
+
+        if (this.playerPieces.length === 0 && this.computerPieces.length === 0) {
           this.declareWinner();
         } else {
           this.resetActivePieces();
           this.isButtonDisabled = false;
         }
-      }, 1000);
+      }, 1500);
     },
     declareWinner() {
       this.winner =
