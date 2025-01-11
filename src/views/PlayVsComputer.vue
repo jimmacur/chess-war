@@ -48,6 +48,8 @@
         :playerPieceValue="playerPieceValue"
         :computerPieceValue="computerPieceValue"
         :battleBench="battleBench"
+        :playerData="playerData"
+        :computerData="computerData"
       />
     </div>
 
@@ -242,20 +244,15 @@ export default {
       this.isActivelyBattling = true;
 
       this.playerPieceValue = this.getRandomValue(playerPiece.classicalValue);
-      this.computerPieceValue = this.getRandomValue(
-        computerPiece.classicalValue
-      );
+      this.computerPieceValue = this.getRandomValue(computerPiece.classicalValue);
       this.showBattleValues = true;
 
       if (this.playerPieceValue > this.computerPieceValue) {
         this.battleResult = "player";
-        this.playerScore +=
-          playerPiece.classicalValue + computerPiece.classicalValue;
+        this.playerScore += playerPiece.classicalValue + computerPiece.classicalValue;
         this.battleBench.forEach((piece) => {
           this.playerScore += piece.classicalValue;
         });
-
-        this.battleBench = [];
       } else if (this.computerPieceValue > this.playerPieceValue) {
         this.battleResult = "computer";
         this.computerScore +=
@@ -264,24 +261,23 @@ export default {
         this.battleBench.forEach((piece) => {
           this.computerScore += piece.classicalValue;
         });
-
-        this.battleBench = [];
       } else {
         this.battleResult = "tie";
-        this.battleBench.push(playerPiece, computerPiece);
+        this.battleBench = [...this.battleBench, playerPiece, computerPiece];
       }
 
       setTimeout(() => {
-        if (
-          this.playerPieces.length === 0 &&
-          this.computerPieces.length === 0
-        ) {
+        if (this.battleResult !== 'tie') {
+          this.battleBench = [];
+        }
+
+        if (this.playerPieces.length === 0 && this.computerPieces.length === 0) {
           this.declareWinner();
         } else {
           this.resetActivePieces();
           this.isButtonDisabled = false;
         }
-      }, 1000);
+      }, 1500);
     },
     declareWinner() {
       this.winner =
