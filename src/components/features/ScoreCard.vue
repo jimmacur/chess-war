@@ -1,6 +1,6 @@
 <template>
   <div :class="[
-    'flex items-center transition-all',
+    'flex items-center transition-all space-x-4',
     reverse ? 'flex-row-reverse space-x-reverse' : 'space-x-4',
   ]">
     <!-- Avatar -->
