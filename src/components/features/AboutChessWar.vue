@@ -117,7 +117,7 @@
             On each turn, one random piece from each side battles the other.
           </li>
           <li class="mb-2">
-            Each piece is assigned a random value ranging from <strong>0</strong> to its normal value. 
+            Each piece is assigned a random value ranging from <strong>0</strong> to its classic value. 
             The piece with the higher random value wins. 
             <div class="text-m bg-gray-600 p-2 rounded-lg mt-2">
             For example, a rook with a random value between <strong>0</strong> and <strong>5</strong> could potentially beat a queen with a random value between <strong>0</strong> and <strong>9</strong> if the rook's random value is higher. 
@@ -127,7 +127,7 @@
             The winner adds the <strong>classical values</strong> of both pieces to their score.
           </li>
           <li>
-            In case of a tie, the pieces go to the <em>“War Zone”</em>. The winner of the next round collects all the points.
+            In case of a tie, the pieces go to the <em>“Battle Bench”</em>. The winner of the next round collects all the points.
           </li>
         </ul>
       </div>
