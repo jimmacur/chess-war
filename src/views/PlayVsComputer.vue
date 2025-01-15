@@ -21,8 +21,8 @@
       :name="computerData.name"
       :avatarSrc="computerData.avatar.src"
       :score="computerScore"
-      :reverse="reverse"
-      class="absolute  top-4 right-4 sm:right-8 sm:top-8 md:right-8"
+      :reverse="true"
+      class="absolute top-4 right-4 sm:right-8 sm:top-8 md:right-8"
     />
 
     <div class="flex flex-row align-middle justify-center mt-10">
